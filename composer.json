@@ -1,7 +1,7 @@
 {
 	"name" : "dicr/yii2-http",
 	"description" : "HTTP utilites for Yii2",
-	"type" : "library",
+	"type" : "yii2-extension",
 	"authors" : [{
 			"name" : "Igor Tarasov",
 			"email" : "develop@dicr.org",
