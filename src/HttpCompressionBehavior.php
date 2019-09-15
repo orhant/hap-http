@@ -14,7 +14,6 @@ use yii\httpclient\RequestEvent;
  */
 class HttpCompressionBehavior extends Behavior
 {
-
     /**
      * {@inheritdoc}
      * @see \yii\base\Behavior::events()
@@ -22,8 +21,8 @@ class HttpCompressionBehavior extends Behavior
     public function events()
     {
         return [
-            Client::EVENT_BEFORE_SEND => 'beforeSend',
-            Client::EVENT_AFTER_SEND => 'afterSend'
+            Client::EVENT_BEFORE_SEND => '_beforeSend',
+            Client::EVENT_AFTER_SEND => '_afterSend'
         ];
     }
 
@@ -32,7 +31,7 @@ class HttpCompressionBehavior extends Behavior
      *
      * @param RequestEvent $event
      */
-    public function beforeSend(RequestEvent $event)
+    public function _beforeSend(RequestEvent $event)
     {
         $headers = $event->request->headers;
         if (! $headers->has('accept-encoding')) {
@@ -46,7 +45,7 @@ class HttpCompressionBehavior extends Behavior
      * @param RequestEvent $event
      * @throws Exception
      */
-    public function afterSend(RequestEvent $event)
+    public function _afterSend(RequestEvent $event)
     {
         $response = $event->response;
         $encoding = $response->headers->get('content-encoding');
