@@ -1,4 +1,12 @@
 <?php
+/**
+ * @copyright 2019-2020 Dicr http://dicr.org
+ * @author Igor A Tarasov <develop@dicr.org>
+ * @license proprietary
+ * @version 07.02.20 20:09:33
+ */
+
+declare(strict_types = 1);
 namespace dicr\http;
 
 use yii\base\Behavior;
@@ -7,16 +15,14 @@ use yii\httpclient\Client;
 use yii\httpclient\RequestEvent;
 
 /**
- * Включает поддержку компрессии в HTTP.
+ * HTTP-compression support for yii\httpclient\Client
  *
- * @author Igor (Dicr) Tarasov <develop@dicr.org>
- * @version 180505
+ * @noinspection PhpUnused
  */
 class HttpCompressionBehavior extends Behavior
 {
     /**
      * {@inheritdoc}
-     * @see \yii\base\Behavior::events()
      */
     public function events()
     {
@@ -27,12 +33,15 @@ class HttpCompressionBehavior extends Behavior
     }
 
     /**
-     * Добавляет заголовок поддержки сжатия.
+     * Adjust request.
      *
      * @param RequestEvent $event
+     * @noinspection PhpUnused
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function _beforeSend(RequestEvent $event)
     {
+        // add accept-encoding header
         $headers = $event->request->headers;
         if (! $headers->has('accept-encoding')) {
             $headers->set('accept-encoding', 'gzip, deflate, compress');
@@ -40,39 +49,40 @@ class HttpCompressionBehavior extends Behavior
     }
 
     /**
-     * Распаковывает контент.
+     * Adjust response.
      *
      * @param RequestEvent $event
      * @throws Exception
+     * @noinspection PhpUnused
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function _afterSend(RequestEvent $event)
     {
         $response = $event->response;
         $encoding = $response->headers->get('content-encoding');
 
-        if (! empty($encoding)) {
-            $content = $response->getContent();
-            $ctx = null;
+        if ($encoding !== null) {
+            $decoded = null;
 
             switch (strtolower($encoding)) {
                 case 'deflate':
-                    $ctx = @gzinflate($content);
+                    $decoded = @gzinflate($response->content);
                     break;
 
                 case 'compress':
-                    $ctx = @gzuncompress($content);
+                    $decoded = @gzuncompress($response->content);
                     break;
 
                 case 'gzip':
-                    $ctx = @gzdecode($content);
+                    $decoded = @gzdecode($response->content);
                     break;
 
                 default:
                     throw new Exception('unknown encode method: ' . $encoding);
             }
 
-            if (!empty($ctx)) {
-                $response->setContent($ctx);
+            if ($decoded !== false) {
+                $response->content = $decoded;
             }
         }
     }
