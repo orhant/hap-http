@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 04:45:11
+ * @version 08.02.20 08:25:40
  */
 
 declare(strict_types = 1);
@@ -61,20 +61,6 @@ class RequestDelayBehavior extends Behavior
     }
 
     /**
-     * Следующее случайное значение задержки.
-     *
-     * @return int microseconds
-     * @throws \Exception
-     */
-    protected function getMicroDelay()
-    {
-        $min = (int)round($this->delayMin * 1000000);
-        $max = (int)round($this->delayMax * 1000000);
-
-        return $min === $max ? $min : random_int($min, $max);
-    }
-
-    /**
      * Adjust request.
      *
      * @noinspection PhpUnused
@@ -83,10 +69,15 @@ class RequestDelayBehavior extends Behavior
      */
     public function _beforeSend()
     {
-        $delay = $this->getMicroDelay();
+        $min = (int)round($this->delayMin * 1000000);
+        $max = (int)round($this->delayMax * 1000000);
+
+        $delay = $min === $max ? $min : random_int($min, $max);
         if ($delay > 0) {
             Yii::debug(sprintf('Ожидаем паузу: %.1s', $delay / 1000000));
             usleep($delay);
         }
+
+        return true;
     }
 }
