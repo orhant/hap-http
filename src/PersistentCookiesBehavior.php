@@ -3,13 +3,15 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 07.02.20 21:24:45
+ * @version 08.02.20 05:41:06
  */
 
 declare(strict_types = 1);
 namespace dicr\http;
 
+use Yii;
 use yii\base\Behavior;
+use yii\base\InvalidConfigException;
 use yii\caching\CacheInterface;
 use yii\caching\TagDependency;
 use yii\di\Instance;
@@ -23,10 +25,10 @@ use yii\web\CookieCollection;
  *
  * @noinspection PhpUnused
  */
-class CookiesStoreBehavior extends Behavior
+class PersistentCookiesBehavior extends Behavior
 {
     /** @var \yii\caching\CacheInterface кэш куков (ключ привязывается к домену запроса) */
-    public $cache = 'cache';
+    public $store = 'cache';
 
     /** @var int|null время хранения в кэше */
     public $cacheDuration;
@@ -39,7 +41,14 @@ class CookiesStoreBehavior extends Behavior
     {
         parent::init();
 
-        $this->cache = Instance::ensure($this->cache, CacheInterface::class);
+        $this->store = Instance::ensure($this->store, CacheInterface::class);
+
+        if (isset($this->cacheDuration)) {
+            $this->cacheDuration = (int)$this->cacheDuration;
+            if ($this->cacheDuration < 1) {
+                throw new InvalidConfigException('cacheDuration');
+            }
+        }
     }
 
     /**
@@ -59,7 +68,7 @@ class CookiesStoreBehavior extends Behavior
      * @param string $domain
      * @return array
      */
-    protected static function cacheKey(string $domain)
+    public static function cacheKey(string $domain)
     {
         return [__CLASS__, $domain];
     }
@@ -74,7 +83,7 @@ class CookiesStoreBehavior extends Behavior
     {
         $key = static::cacheKey($domain);
 
-        return $this->cache->get($key) ?: null;
+        return $this->store->get($key) ?: null;
     }
 
     /**
@@ -82,18 +91,21 @@ class CookiesStoreBehavior extends Behavior
      *
      * @param string $domain
      * @param CookieCollection $cookies ассоциативный массив name => Cookie
+     * @return $this
      */
     public function saveCookies(string $domain, CookieCollection $cookies)
     {
         $key = static::cacheKey($domain);
 
         if ($cookies === null || $cookies->count < 1) {
-            $this->cache->delete($key);
+            $this->store->delete($key);
         } else {
-            $this->cache->set($key, $cookies, $this->cacheDuration, new TagDependency([
+            $this->store->set($key, $cookies, $this->cacheDuration, new TagDependency([
                 'tags' => [__CLASS__, $domain]
             ]));
         }
+
+        return $this;
     }
 
     /**
@@ -128,6 +140,7 @@ class CookiesStoreBehavior extends Behavior
         // добавляем к запросу
         if ($cookies !== null && $cookies->count > 0) {
             $request->addCookies($cookies->toArray());
+            Yii::debug('Добавлено ' . $cookies->count . ' куков');
         }
     }
 
@@ -154,8 +167,10 @@ class CookiesStoreBehavior extends Behavior
             if ($cookies === null) {
                 $cookies = $response->cookies;
             } else {
+                /** @var \yii\web\Cookie $cookie */
                 foreach ($response->cookies->toArray() as $cookie) {
                     $cookies->add($cookie);
+                    Yii::debug('Получен cookie: ' . $cookie->name . '=' . $cookie->value);
                 }
             }
 

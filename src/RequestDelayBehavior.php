@@ -3,12 +3,13 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 07.02.20 20:32:58
+ * @version 08.02.20 04:45:11
  */
 
 declare(strict_types = 1);
 namespace dicr\http;
 
+use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\httpclient\Client;
@@ -16,16 +17,15 @@ use yii\httpclient\Client;
 /**
  * Задержка запросов для yii\httpclient\Client
  *
- * @property-read float $delay следующая задержка, сек
  * @noinspection PhpUnused
  */
 class RequestDelayBehavior extends Behavior
 {
-    /** @var int minimum delay value, microseconds */
-    public $delayMin = 0;
+    /** @var float minimum delay value, seconds */
+    public $delayMin = 0.0;
 
-    /** @var int maximum delay value, microseconds */
-    public $delayMax = 3000;
+    /** @var float maximum delay value, seconds */
+    public $delayMax = 2.0;
 
     /**
      * @inheritDoc
@@ -35,17 +35,15 @@ class RequestDelayBehavior extends Behavior
     {
         parent::init();
 
-        if (! is_numeric($this->delayMin) || $this->delayMin < 0) {
+        $this->delayMin = (float)$this->delayMin;
+        if ($this->delayMin < 0) {
             throw new InvalidConfigException('delayMin');
         }
 
-        $this->delayMin = (int)$this->delayMin;
-
-        if (! is_numeric($this->delayMax) || $this->delayMax < 0) {
+        $this->delayMax = (float)$this->delayMax;
+        if ($this->delayMax < 0) {
             throw new InvalidConfigException('delayMax');
         }
-
-        $this->delayMax = (int)$this->delayMax;
 
         if ($this->delayMin > $this->delayMax) {
             throw new InvalidConfigException('delayMin > delayMax');
@@ -65,17 +63,15 @@ class RequestDelayBehavior extends Behavior
     /**
      * Следующее случайное значение задержки.
      *
-     * @return int, microseconds
+     * @return int microseconds
      * @throws \Exception
-     * @noinspection PhpUnused
      */
-    public function getDelay()
+    protected function getMicroDelay()
     {
-        if ($this->delayMin === $this->delayMax) {
-            return $this->delayMin;
-        }
+        $min = (int)round($this->delayMin * 1000000);
+        $max = (int)round($this->delayMax * 1000000);
 
-        return random_int($this->delayMin, $this->delayMax);
+        return $min === $max ? $min : random_int($min, $max);
     }
 
     /**
@@ -83,12 +79,13 @@ class RequestDelayBehavior extends Behavior
      *
      * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
+     * @throws \Exception
      */
     public function _beforeSend()
     {
-        $delay = $this->delay;
-
+        $delay = $this->getMicroDelay();
         if ($delay > 0) {
+            Yii::debug(sprintf('Ожидаем паузу: %.1s', $delay / 1000000));
             usleep($delay);
         }
     }
