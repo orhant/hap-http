@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 08:15:47
+ * @version 09.02.20 08:57:43
  */
 
 declare(strict_types = 1);
@@ -15,7 +15,6 @@ use yii\base\BaseObject;
 use yii\httpclient\ParserInterface;
 use yii\httpclient\Response;
 use const LIBXML_DTDLOAD;
-use const LIBXML_HTML_NODEFDTD;
 use const LIBXML_NOERROR;
 use const LIBXML_NOWARNING;
 use const LIBXML_PARSEHUGE;
@@ -52,11 +51,12 @@ class HTMLParser extends BaseObject implements ParserInterface
             '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' .
             // meta старого типа (http-equiv) устанавливает кодировку текста. Она должны быть раньше чем текст в документе.
             '<meta http-equiv="Content-Type" content="text/html; charset=' . $encoding . '"/>' .
+            '<meta charset="' . $encoding . '"/>' .
             $content;
 
         // создаем документ
         $doc = new DOMDocument('1.0', $encoding);
-        $doc->resolveExternals = true;
+        $doc->resolveExternals = false;
         $doc->recover = true;
         $doc->strictErrorChecking = false;
         $doc->validateOnParse = false;
@@ -65,8 +65,8 @@ class HTMLParser extends BaseObject implements ParserInterface
         $doc->substituteEntities = false;
 
         // пытаемся загрузить HTML
-        if (! $doc->loadHTML($content, LIBXML_HTML_NODEFDTD | LIBXML_DTDLOAD | LIBXML_PARSEHUGE | LIBXML_NOWARNING |
-            LIBXML_NOERROR | LIBXML_NOCDATA)) {
+        if (! $doc->loadHTML($content, LIBXML_DTDLOAD | LIBXML_PARSEHUGE | LIBXML_NOWARNING |
+            LIBXML_NOERROR | LIBXML_NOCDATA | LIBXML_NONET | LIBXML_NOXMLDECL)) {
             return null;
         }
 
