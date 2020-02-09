@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 05:59:50
+ * @version 09.02.20 06:24:39
  */
 
 declare(strict_types = 1);
@@ -90,6 +90,9 @@ class CachingClient extends Client
             if ($response instanceof Response) {
                 Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
 
+                // восстанавливаем привязку к текущему клиенту
+                $response->client = $request->client;
+
                 return $response;
             }
         }
@@ -100,6 +103,9 @@ class CachingClient extends Client
         // store in cache
         if ($response->isOk && ! empty($this->cache)) {
             $cacheResponse = $this->cacheCookies ? $response : (clone $response)->setCookies([]);
+
+            // сохраняем без рекурсивных связей с клиентом
+            $cacheResponse->client = null;
 
             // save response
             $this->cache->set($cacheKey, $cacheResponse, $this->cacheDuration, new TagDependency([
