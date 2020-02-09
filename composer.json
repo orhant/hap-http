@@ -21,7 +21,7 @@
         "php": ">=7.2",
         "ext-zlib": "*",
         "yiisoft/yii2": "~2.0",
-        "yiisoft/yii2-httpclient": "~2.0"
+        "yiisoft/yii2-httpclient": "~2.0", "ext-dom": "*", "ext-libxml": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
