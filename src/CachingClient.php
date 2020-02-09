@@ -3,13 +3,14 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 09:02:34
+ * @version 09.02.20 05:52:30
  */
 
 declare(strict_types = 1);
 
 namespace dicr\http;
 
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\caching\CacheInterface;
 use yii\caching\TagDependency;
@@ -85,6 +86,8 @@ class CachingClient extends Client
             // load response
             $response = $this->cache->get($cacheKey);
             if ($response instanceof Response) {
+                Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
+
                 return $response;
             }
         }
