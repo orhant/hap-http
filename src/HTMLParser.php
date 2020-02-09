@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 08:03:35
+ * @version 09.02.20 08:15:47
  */
 
 declare(strict_types = 1);
@@ -28,7 +28,7 @@ use const LIBXML_PARSEHUGE;
 class HTMLParser extends BaseObject implements ParserInterface
 {
     /** @var string формат ответа */
-    public const FORMAT_HTML = 'html';
+    public const FORMAT = 'html';
 
     /**
      * {@inheritdoc}
