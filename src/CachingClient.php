@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 05:52:30
+ * @version 09.02.20 05:59:50
  */
 
 declare(strict_types = 1);
@@ -23,12 +23,14 @@ use function is_int;
 /**
  * Client with response caching.
  *
+ * Для кэшироапния запросы должны быть одинаковые, в том числе Cookies и User-Agent.
+ *
  * @noinspection PhpUnused
  */
 class CachingClient extends Client
 {
     /** @var \yii\caching\CacheInterface */
-    public $cache;
+    public $cache = 'cache';
 
     /** @var bool учитывать куки в кеше. Включать если контент в ответе различается от куков */
     public $cacheCookies = false;
