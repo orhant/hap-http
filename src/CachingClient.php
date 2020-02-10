@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 06:24:39
+ * @version 10.02.20 05:52:58
  */
 
 declare(strict_types = 1);
@@ -23,7 +23,7 @@ use function is_int;
 /**
  * Client with response caching.
  *
- * Для кэшироапния запросы должны быть одинаковые, в том числе Cookies и User-Agent.
+ * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similars for next requests
  *
  * @noinspection PhpUnused
  */
@@ -32,7 +32,10 @@ class CachingClient extends Client
     /** @var \yii\caching\CacheInterface */
     public $cache = 'cache';
 
-    /** @var bool учитывать куки в кеше. Включать если контент в ответе различается от куков */
+    /**
+     * @var bool if true, then cache key calculated with cookies. If false, then browsing is inkognito.
+     * Use this only when response depends on cookies.
+     */
     public $cacheCookies = false;
 
     /** @var int cache time, s */
@@ -90,7 +93,7 @@ class CachingClient extends Client
             if ($response instanceof Response) {
                 Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
 
-                // восстанавливаем привязку к текущему клиенту
+                // restore client link
                 $response->client = $request->client;
 
                 return $response;
@@ -104,7 +107,7 @@ class CachingClient extends Client
         if ($response->isOk && ! empty($this->cache)) {
             $cacheResponse = $this->cacheCookies ? $response : (clone $response)->setCookies([]);
 
-            // сохраняем без рекурсивных связей с клиентом
+            // clean connection to client to not save it in cache
             $cacheResponse->client = null;
 
             // save response
