@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 10.02.20 05:52:58
+ * @version 14.02.20 18:26:27
  */
 
 declare(strict_types = 1);
@@ -23,7 +23,7 @@ use function is_int;
 /**
  * Client with response caching.
  *
- * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similars for next requests
+ * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similar for next requests
  *
  * @noinspection PhpUnused
  */
@@ -33,7 +33,7 @@ class CachingClient extends Client
     public $cache = 'cache';
 
     /**
-     * @var bool if true, then cache key calculated with cookies. If false, then browsing is inkognito.
+     * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
      * Use this only when response depends on cookies.
      */
     public $cacheCookies = false;
