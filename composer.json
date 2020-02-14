@@ -20,8 +20,11 @@
     "require": {
         "php": ">=7.2",
         "ext-zlib": "*",
-        "yiisoft/yii2": "~2.0",
-        "yiisoft/yii2-httpclient": "~2.0", "ext-dom": "*", "ext-libxml": "*"
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "yiisoft/yii2": "~2.0.32",
+        "yiisoft/yii2-httpclient": "~2.0.12",
+        "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -33,12 +36,15 @@
             "url": "https://asset-packagist.org"
         }, {
             "type": "git",
+            "url": "https://git.code.sf.net/p/simplehtmldom/repository"
+        }, {
+            "type": "git",
             "url": "https://gitlab.com/dicr/yii2-settings.git"
         }
     ],
     "autoload": {
         "psr-4": {
-            "dicr\\http\\": "src"
+            "dicr\\http\\": "src/"
         }
     }
 }
