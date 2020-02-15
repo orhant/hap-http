@@ -37,9 +37,6 @@
         }, {
             "type": "git",
             "url": "https://gitlab.com/dicr/yii2-settings.git"
-        }, {
-            "type": "git",
-            "url": "https://github.com/dicrtarasov/simplehtmldom.git"
         }
     ],
     "autoload": {

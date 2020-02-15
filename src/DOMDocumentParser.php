@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:23:29
+ * @version 16.02.20 04:08:16
  */
 
 declare(strict_types = 1);
@@ -27,7 +27,7 @@ use const LIBXML_PARSEHUGE;
 class DOMDocumentParser extends BaseObject implements ParserInterface
 {
     /** @var string формат ответа */
-    public const FORMAT = __CLASS__;
+    public const FORMAT = 'dom-document';
 
     /**
      * {@inheritdoc}
