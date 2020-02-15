@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 03:31:59
+ * @version 16.02.20 03:49:10
  */
 
 declare(strict_types = 1);
@@ -84,7 +84,7 @@ class HttpCompressionBehavior extends Behavior
 
             if ($decoded !== false) {
                 $response->content = $decoded;
-                Yii::debug('Ответ декодирован из: ' . $encoding);
+                Yii::debug('Ответ декодирован из: ' . $encoding, __METHOD__);
             }
         }
     }

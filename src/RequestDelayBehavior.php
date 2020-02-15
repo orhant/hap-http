@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 08:25:40
+ * @version 16.02.20 03:50:10
  */
 
 declare(strict_types = 1);
@@ -74,7 +74,7 @@ class RequestDelayBehavior extends Behavior
 
         $delay = $min === $max ? $min : random_int($min, $max);
         if ($delay > 0) {
-            Yii::debug(sprintf('Ожидаем паузу: %.1s', $delay / 1000000));
+            Yii::debug(sprintf('Ожидаем паузу: %.1s', $delay / 1000000), __METHOD__);
             usleep($delay);
         }
 

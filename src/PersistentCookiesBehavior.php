@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 05:41:06
+ * @version 16.02.20 03:50:00
  */
 
 declare(strict_types = 1);
@@ -140,7 +140,7 @@ class PersistentCookiesBehavior extends Behavior
         // добавляем к запросу
         if ($cookies !== null && $cookies->count > 0) {
             $request->addCookies($cookies->toArray());
-            Yii::debug('Добавлено ' . $cookies->count . ' куков');
+            Yii::debug('Добавлено ' . $cookies->count . ' куков', __METHOD__);
         }
     }
 
@@ -170,7 +170,7 @@ class PersistentCookiesBehavior extends Behavior
                 /** @var \yii\web\Cookie $cookie */
                 foreach ($response->cookies->toArray() as $cookie) {
                     $cookies->add($cookie);
-                    Yii::debug('Получен cookie: ' . $cookie->name . '=' . $cookie->value);
+                    Yii::debug('Получен cookie: ' . $cookie->name . '=' . $cookie->value, __METHOD__);
                 }
             }
 
