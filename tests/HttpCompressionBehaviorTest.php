@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 07:13:43
+ * @version 14.02.20 18:26:51
  */
 
 declare(strict_types = 1);
@@ -11,7 +11,6 @@ declare(strict_types = 1);
 namespace dicr\tests;
 
 use dicr\http\PersistentCookiesBehavior;
-use dicr\http\RequestDelayBehavior;
 use PHPUnit\Framework\TestCase;
 use Yii;
 use yii\caching\ApcCache;
@@ -19,11 +18,11 @@ use yii\caching\TagDependency;
 use yii\httpclient\Client;
 
 /**
- * Class HttpCompressionBehaviortest
+ * Class HttpCompressionBehaviorTest
  *
  * @package dicr\tests
  */
-class HttpCompressionBehaviortest extends TestCase
+class HttpCompressionBehaviorTest extends TestCase
 {
     /**
      * Проверка паузы запроса.
@@ -47,9 +46,5 @@ class HttpCompressionBehaviortest extends TestCase
         TagDependency::invalidate(Yii::$app->cache, 'www.google.com');
         $request = $client->get('https://www.google.com/');
         $response = $request->send();
-
-        var_dump($request->cookies, $response->cookies);
-        exit;
-
     }
 }

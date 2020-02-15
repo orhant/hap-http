@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 07:13:43
+ * @version 14.02.20 18:24:38
  */
 
 declare(strict_types = 1);
@@ -13,7 +13,6 @@ namespace dicr\tests;
 use dicr\http\PersistentCookiesBehavior;
 use PHPUnit\Framework\TestCase;
 use Yii;
-use yii\caching\ApcCache;
 use yii\caching\FileCache;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
@@ -100,11 +99,7 @@ class PersistentCookiesBehaviorTest extends TestCase
         $request = $client->get('https://www.google.com/');
         $response = $request->send();
 
-        var_dump($request->toString(), $response->toString());
-        exit;
-
         self::assertGreaterThan(0, $request->cookies->count);
         self::assertSame(0, $response->cookies->count);
-
     }
 }

@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 09.02.20 08:57:43
+ * @version 14.02.20 18:23:29
  */
 
 declare(strict_types = 1);
@@ -20,14 +20,14 @@ use const LIBXML_NOWARNING;
 use const LIBXML_PARSEHUGE;
 
 /**
- * Парсер HTML-текста в DOMDocument.
+ * Парсер HTML-текста в \DOMDocument.
  *
  * @noinspection PhpUnused
  */
-class HTMLParser extends BaseObject implements ParserInterface
+class DOMDocumentParser extends BaseObject implements ParserInterface
 {
     /** @var string формат ответа */
-    public const FORMAT = 'html';
+    public const FORMAT = __CLASS__;
 
     /**
      * {@inheritdoc}

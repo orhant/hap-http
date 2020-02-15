@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 08.02.20 04:26:26
+ * @version 14.02.20 18:24:51
  */
 
 declare(strict_types = 1);
@@ -11,7 +11,7 @@ declare(strict_types = 1);
 use yii\caching\FileCache;
 
 defined('YII_DEBUG') || define('YII_DEBUG', true);
-defined('YII_ENV') || define('yII_ENV', 'dev');
+defined('YII_ENV') || define('YII_ENV', 'dev');
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/vendor/yiisoft/yii2/Yii.php';
