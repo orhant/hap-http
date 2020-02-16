@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:26:27
+ * @version 16.02.20 18:09:40
  */
 
 declare(strict_types = 1);
@@ -31,6 +31,9 @@ class CachingClient extends Client
 {
     /** @var \yii\caching\CacheInterface */
     public $cache = 'cache';
+
+    /** @var string tags fro TagDependency */
+    public const CACHE_TAGS = [__CLASS__];
 
     /**
      * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
@@ -112,10 +115,18 @@ class CachingClient extends Client
 
             // save response
             $this->cache->set($cacheKey, $cacheResponse, $this->cacheDuration, new TagDependency([
-                'tags' => [__CLASS__]
+                'tags' => self::CACHE_TAGS
             ]));
         }
 
         return $response;
+    }
+
+    /**
+     * Invalidate http-response cache.
+     */
+    public function invalidateCache()
+    {
+        TagDependency::invalidate($this->cache, self::CACHE_TAGS);
     }
 }
