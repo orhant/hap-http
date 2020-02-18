@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 18:09:40
+ * @version 18.02.20 16:40:11
  */
 
 declare(strict_types = 1);
@@ -61,6 +61,12 @@ class CachingClient extends Client
         } elseif (! is_int($this->cacheDuration) || $this->cacheDuration < 0) {
             throw new InvalidConfigException('cacheDuration');
         }
+
+        // настраиваем дополнительные парсеры
+        $this->parsers = array_merge([
+            DOMDocumentParser::FORMAT => DOMDocumentParser::class,
+            HTMLDocumentParser::FORMAT => HTMLDocumentParser::class
+        ], $this->parsers ?: []);
     }
 
     /**
@@ -124,6 +130,8 @@ class CachingClient extends Client
 
     /**
      * Invalidate http-response cache.
+     *
+     * @noinspection PhpUnused
      */
     public function invalidateCache()
     {
