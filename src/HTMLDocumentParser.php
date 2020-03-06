@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:23:11
+ * @version 06.03.20 19:53:59
  */
 
 declare(strict_types = 1);
@@ -46,19 +46,24 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
     public $options;
 
     /**
+     * Парсит HTML-контент.
+     *
+     * @param string $content
+     * @return \simplehtmldom\HtmlDocument
+     */
+    public function parseContent(string $content)
+    {
+        return new HtmlDocument($content, (bool)$this->lowerTags,
+            (bool)$this->forceTagsClosed, 'UTF-8', $this->removeWhitespace,
+            $this->brText, $this->spanText, $this->options
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function parse(Response $response)
     {
-        // получаем текст ответа
-        $content = trim($response->content);
-        if ($content === '') {
-            return null;
-        }
-
-        return new HtmlDocument($response->content, (bool)$this->lowerTags,
-            (bool)$this->forceTagsClosed, 'UTF-8', $this->removeWhitespace,
-            $this->brText, $this->spanText, $this->options
-        );
+        return $this->parseContent((string)$response->content);
     }
 }
