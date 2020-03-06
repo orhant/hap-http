@@ -43,5 +43,10 @@
         "psr-4": {
             "dicr\\http\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "dicr\\tests\\": "tests/"
+        }
     }
 }

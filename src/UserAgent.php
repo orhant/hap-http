@@ -3,17 +3,16 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:23:29
+ * @version 06.03.20 19:27:00
  */
 
+/** @noinspection PhpUnused */
 declare(strict_types = 1);
 
 namespace dicr\http;
 
 /**
  * User-Agent.
- *
- * @noinspection PhpUnused
  */
 class UserAgent
 {

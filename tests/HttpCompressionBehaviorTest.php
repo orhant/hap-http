@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:26:51
+ * @version 06.03.20 19:26:07
  */
 
 declare(strict_types = 1);
@@ -45,6 +45,6 @@ class HttpCompressionBehaviorTest extends TestCase
 
         TagDependency::invalidate(Yii::$app->cache, 'www.google.com');
         $request = $client->get('https://www.google.com/');
-        $response = $request->send();
+        $request->send();
     }
 }
