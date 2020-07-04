@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:53:59
+ * @version 04.07.20 12:16:13
  */
 
 declare(strict_types = 1);
@@ -30,7 +30,7 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
     /** @var bool преобразовывать названия тегов в маленькие буквы */
     public $lowerTags = true;
 
-    /** @var bool принудительное закрытие всех тэгов, например <br></br> */
+    /** @var bool принудительное закрытие всех тегов, например <br></br> */
     public $forceTagsClosed = false;
 
     /** @var bool удалять пробелы и переносы текста между тегами и в тексте */
@@ -49,7 +49,7 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
      * Парсит HTML-контент.
      *
      * @param string $content
-     * @return \simplehtmldom\HtmlDocument
+     * @return HtmlDocument
      */
     public function parseContent(string $content)
     {

@@ -3,12 +3,13 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 04:11:16
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
 namespace dicr\http;
 
+use Exception;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
@@ -29,7 +30,7 @@ class RequestDelayBehavior extends Behavior
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -65,7 +66,7 @@ class RequestDelayBehavior extends Behavior
      *
      * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
-     * @throws \Exception
+     * @throws Exception
      */
     public function _beforeSend()
     {

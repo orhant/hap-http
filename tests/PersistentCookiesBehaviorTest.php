@@ -3,39 +3,26 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:24:38
+ * @version 04.07.20 12:16:48
  */
 
 declare(strict_types = 1);
-
 namespace dicr\tests;
 
 use dicr\http\PersistentCookiesBehavior;
 use PHPUnit\Framework\TestCase;
 use Yii;
-use yii\caching\FileCache;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 use yii\web\Cookie;
 use yii\web\CookieCollection;
 
 /**
  * Class PersistentCookiesBehaviorTest
- *
- * @package dicr\tests
  */
 class PersistentCookiesBehaviorTest extends TestCase
 {
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
-    public static function setUpBeforeClass()
-    {
-        Yii::$app->set('cache', [
-            'class' => FileCache::class,
-        ]);
-    }
-
     /**
      * Тест определения домена из запроса.
      */
@@ -58,9 +45,7 @@ class PersistentCookiesBehaviorTest extends TestCase
 
         $domain = 'test.com';
 
-        $behavior = new PersistentCookiesBehavior([
-            'store' => 'cache'
-        ]);
+        $behavior = new PersistentCookiesBehavior();
 
         // сохраняем пустое значение
         $behavior->saveCookies($domain, new CookieCollection());
@@ -75,7 +60,7 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Проверка паузы запроса.
      *
-     * @throws \yii\httpclient\Exception
+     * @throws Exception
      */
     public function testRequest()
     {
@@ -92,14 +77,21 @@ class PersistentCookiesBehaviorTest extends TestCase
         // делаем первый запрос
         $request = $client->get('https://www.google.com/');
         $response = $request->send();
+
+        // в запросе не должно быть куков
         self::assertSame(0, $request->cookies->count);
+
+        // в ответе должны быть куки
         self::assertGreaterThan(0, $response->cookies->count);
+
+        // запоминаем сколько куков нам прислали
+        $cookiesCount = $response->cookies->count;
 
         // делаем второй запрос
         $request = $client->get('https://www.google.com/');
-        $response = $request->send();
+        $request->send();
 
-        self::assertGreaterThan(0, $request->cookies->count);
-        self::assertSame(0, $response->cookies->count);
+        // в запросе должны быть предыдущие куки
+        self::assertSame($cookiesCount, $request->cookies->count);
     }
 }

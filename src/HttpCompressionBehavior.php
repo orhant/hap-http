@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 03:49:10
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
@@ -56,6 +56,7 @@ class HttpCompressionBehavior extends Behavior
      * @throws Exception
      * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
+     * @noinspection PhpUsageOfSilenceOperatorInspection
      */
     public function _afterSend(RequestEvent $event)
     {

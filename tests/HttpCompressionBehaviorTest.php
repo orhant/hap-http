@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:26:07
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
@@ -13,29 +13,22 @@ namespace dicr\tests;
 use dicr\http\PersistentCookiesBehavior;
 use PHPUnit\Framework\TestCase;
 use Yii;
-use yii\caching\ApcCache;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 
 /**
  * Class HttpCompressionBehaviorTest
- *
- * @package dicr\tests
  */
 class HttpCompressionBehaviorTest extends TestCase
 {
     /**
      * Проверка паузы запроса.
      *
-     * @throws \yii\httpclient\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
      */
     public function testCompression()
     {
-        Yii::$app->set('cache', [
-            'class' => ApcCache::class,
-        ]);
-
         $client = new Client([
             'as cookies' => [
                 'class' => PersistentCookiesBehavior::class,

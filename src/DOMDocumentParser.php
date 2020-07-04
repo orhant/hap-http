@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:59:34
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
@@ -35,7 +35,7 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      *
      * @param string $content HTML-контент
      * @param string $charset кодировка
-     * @return \DOMDocument
+     * @return DOMDocument
      */
     public function parseContent(string $content, string $charset = null)
     {

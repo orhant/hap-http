@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 03:50:00
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
@@ -18,6 +18,7 @@ use yii\di\Instance;
 use yii\httpclient\Client;
 use yii\httpclient\Request;
 use yii\httpclient\RequestEvent;
+use yii\web\Cookie;
 use yii\web\CookieCollection;
 
 /**
@@ -27,7 +28,7 @@ use yii\web\CookieCollection;
  */
 class PersistentCookiesBehavior extends Behavior
 {
-    /** @var \yii\caching\CacheInterface кэш куков (ключ привязывается к домену запроса) */
+    /** @var CacheInterface кэш куков (ключ привязывается к домену запроса) */
     public $store = 'cache';
 
     /** @var int|null время хранения в кэше */
@@ -35,7 +36,7 @@ class PersistentCookiesBehavior extends Behavior
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -77,7 +78,7 @@ class PersistentCookiesBehavior extends Behavior
      * Загружает их кэша куки для домена.
      *
      * @param string $domain
-     * @return \yii\web\CookieCollection|null
+     * @return CookieCollection|null
      */
     public function loadCookies(string $domain)
     {
@@ -111,7 +112,7 @@ class PersistentCookiesBehavior extends Behavior
     /**
      * Возвращает домен запроса.
      *
-     * @param \yii\httpclient\Request $request
+     * @param Request $request
      * @return string
      */
     public static function domain(Request $request)
@@ -167,7 +168,7 @@ class PersistentCookiesBehavior extends Behavior
             if ($cookies === null) {
                 $cookies = $response->cookies;
             } else {
-                /** @var \yii\web\Cookie $cookie */
+                /** @var Cookie $cookie */
                 foreach ($response->cookies->toArray() as $cookie) {
                     $cookies->add($cookie);
                     Yii::debug('Получен cookie: ' . $cookie->name . '=' . $cookie->value, __METHOD__);

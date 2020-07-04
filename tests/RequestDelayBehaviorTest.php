@@ -3,28 +3,26 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:23:29
+ * @version 04.07.20 12:10:34
  */
 
 declare(strict_types = 1);
-
 namespace dicr\tests;
 
 use dicr\http\RequestDelayBehavior;
 use PHPUnit\Framework\TestCase;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 
 /**
  * Class RequestDelayBehaviorTest
- *
- * @package dicr\tests
  */
 class RequestDelayBehaviorTest extends TestCase
 {
     /**
      * Проверка паузы запроса.
      *
-     * @throws \yii\httpclient\Exception
+     * @throws Exception
      */
     public function testDelay()
     {

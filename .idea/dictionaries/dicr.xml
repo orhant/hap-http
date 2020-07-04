@@ -20,11 +20,13 @@
       <w>instagram</w>
       <w>khtml</w>
       <w>kinza</w>
+      <w>mbstring</w>
       <w>metrika</w>
       <w>midp</w>
       <w>miui</w>
       <w>mozilla</w>
       <w>msnbot</w>
+      <w>nonhttp</w>
       <w>redmi</w>
       <w>resizer</w>
       <w>roave</w>
@@ -39,6 +41,9 @@
       <w>yiisoft</w>
       <w>yowser</w>
       <w>zoominfo</w>
+      <w>парсер</w>
+      <w>парсеры</w>
+      <w>парсит</w>
     </words>
   </dictionary>
 </component>

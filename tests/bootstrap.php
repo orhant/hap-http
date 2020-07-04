@@ -3,12 +3,12 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:24:51
+ * @version 04.07.20 12:21:24
  */
 
 declare(strict_types = 1);
 
-use yii\caching\FileCache;
+use yii\caching\ArrayCache;
 
 defined('YII_DEBUG') || define('YII_DEBUG', true);
 defined('YII_ENV') || define('YII_ENV', 'dev');
@@ -20,13 +20,9 @@ require dirname(__DIR__) . '/vendor/yiisoft/yii2/Yii.php';
 $application = new yii\console\Application([
     'id' => 'test',
     'basePath' => dirname(__DIR__),
-    'aliases' => [
-        '@dicr\\http' => dirname(__DIR__) . '/src',
-        '@dicr\\tests' => __DIR__
-    ],
     'components' => [
         'cache' => [
-            'class' => FileCache::class,
+            'class' => ArrayCache::class,
         ],
     ]
 ]);

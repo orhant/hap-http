@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 18.02.20 16:40:11
+ * @version 04.07.20 12:16:14
  */
 
 declare(strict_types = 1);
@@ -16,6 +16,7 @@ use yii\caching\CacheInterface;
 use yii\caching\TagDependency;
 use yii\di\Instance;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 use yii\httpclient\Request;
 use yii\httpclient\Response;
 use function is_int;
@@ -29,7 +30,7 @@ use function is_int;
  */
 class CachingClient extends Client
 {
-    /** @var \yii\caching\CacheInterface */
+    /** @var CacheInterface */
     public $cache = 'cache';
 
     /** @var string tags fro TagDependency */
@@ -46,7 +47,7 @@ class CachingClient extends Client
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -72,7 +73,7 @@ class CachingClient extends Client
     /**
      * Return cache key for request.
      *
-     * @param \yii\httpclient\Request $request
+     * @param Request $request
      * @return string[]
      */
     protected function cacheKey(Request $request)
@@ -85,8 +86,8 @@ class CachingClient extends Client
     /**
      * @inheritDoc
      *
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function send($request)
     {
