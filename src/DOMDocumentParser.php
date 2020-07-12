@@ -3,11 +3,10 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:16:14
+ * @version 12.07.20 13:04:03
  */
 
 declare(strict_types = 1);
-
 namespace dicr\http;
 
 use DOMDocument;
@@ -22,8 +21,6 @@ use const LIBXML_PARSEHUGE;
 
 /**
  * Парсер HTML-текста в \DOMDocument.
- *
- * @noinspection PhpUnused
  */
 class DOMDocumentParser extends BaseObject implements ParserInterface
 {

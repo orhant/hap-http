@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:06:46
+ * @version 12.07.20 13:06:54
  */
 
 declare(strict_types = 1);
@@ -40,8 +40,6 @@ use function is_string;
  * @property-read string $hostInfo user:pass@host:port
  * @property-read string $requestUri строка запроса (путь?параметры#фрагмент)
  * @property-read bool $isAbsolute признак абсолютной ссылки
- *
- * @noinspection PhpUnused
  */
 class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
 {
@@ -208,8 +206,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
-     * @see \yii\base\Arrayable::fields()
+     * @inheritDoc
      */
     public function fields()
     {
@@ -219,8 +216,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
-     * @see \yii\base\Arrayable::extraFields()
+     * @inheritDoc
      */
     public function extraFields()
     {
@@ -231,7 +227,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает схему
      *
      * @return string
-     * @noinspection PhpUnused
      */
     public function getScheme()
     {
@@ -243,7 +238,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $scheme
      * @return static
-     * @noinspection PhpUnused
      */
     public function setScheme(string $scheme)
     {
@@ -256,7 +250,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает логин
      *
      * @return string
-     * @noinspection PhpUnused
      */
     public function getUser()
     {
@@ -268,7 +261,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $user
      * @return static
-     * @noinspection PhpUnused
      */
     public function setUser(string $user)
     {
@@ -281,7 +273,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает пароль
      *
      * @return string
-     * @noinspection PhpUnused
      */
     public function getPass()
     {
@@ -293,7 +284,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $pass
      * @return static
-     * @noinspection PhpUnused
      */
     public function setPass(string $pass)
     {
@@ -319,7 +309,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param string $host
      * @return static
      * @throws InvalidArgumentException
-     * @noinspection PhpUnused
      */
     public function setHost(string $host)
     {
@@ -332,7 +321,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает порт
      *
      * @return int порт
-     * @noinspection PhpUnused
      */
     public function getPort()
     {
@@ -345,7 +333,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param int $port
      * @return static
      * @throws InvalidArgumentException
-     * @noinspection PhpUnused
      */
     public function setPort(int $port)
     {
@@ -373,7 +360,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $path
      * @return static
-     * @noinspection PhpUnused
      */
     public function setPath(string $path)
     {
@@ -402,7 +388,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param array|string $query
      * @return static
-     * @noinspection PhpUnused
      */
     public function setQuery($query)
     {
@@ -415,7 +400,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает фрагмент
      *
      * @return string фрагмент
-     * @noinspection PhpUnused
      */
     public function getFragment()
     {
@@ -427,7 +411,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $fragment
      * @return static
-     * @noinspection PhpUnused
      */
     public function setFragment(string $fragment)
     {
@@ -437,7 +420,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
     }
 
     /**
-     * Возвращает hostinfo: user:pass@host:port часть URL
+     * Возвращает hostInfo: user:pass@host:port часть URL
      *
      * @param bool $toAscii преобразовать домен из UTF-8 в ASCII
      * @return string
@@ -550,7 +533,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает признак абсолютной ссылки
      *
      * @return bool
-     * @noinspection PhpUnused
      */
     public function getIsAbsolute()
     {
@@ -661,7 +643,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @param string $parent родительский домен
      * @return bool true если $domain != $parent и является поддоменом $parent
-     * @noinspection PhpUnused
      */
     public function isSubdomain(string $parent)
     {
@@ -740,7 +721,6 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @return bool true если совпадает
      * @throws LogicException url не абсолютный
      * @link https://yandex.ru/support/webmaster/controlling-robot/robots-txt.html
-     * @noinspection PhpUnused
      */
     public function matchRobotsMask(string $mask)
     {

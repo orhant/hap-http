@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:16:14
+ * @version 12.07.20 13:04:38
  */
 
 declare(strict_types = 1);
@@ -17,13 +17,11 @@ use yii\httpclient\RequestEvent;
 
 /**
  * HTTP-compression support for yii\httpclient\Client
- *
- * @noinspection PhpUnused
  */
 class HttpCompressionBehavior extends Behavior
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function events()
     {
@@ -37,8 +35,6 @@ class HttpCompressionBehavior extends Behavior
      * Adjust request.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
-     * @noinspection PhpMethodNamingConventionInspection
      */
     public function _beforeSend(RequestEvent $event)
     {
@@ -54,8 +50,6 @@ class HttpCompressionBehavior extends Behavior
      *
      * @param RequestEvent $event
      * @throws Exception
-     * @noinspection PhpUnused
-     * @noinspection PhpMethodNamingConventionInspection
      * @noinspection PhpUsageOfSilenceOperatorInspection
      */
     public function _afterSend(RequestEvent $event)

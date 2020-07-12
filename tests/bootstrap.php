@@ -3,12 +3,10 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:21:24
+ * @version 12.07.20 13:08:48
  */
 
 declare(strict_types = 1);
-
-use yii\caching\ArrayCache;
 
 defined('YII_DEBUG') || define('YII_DEBUG', true);
 defined('YII_ENV') || define('YII_ENV', 'dev');
@@ -22,7 +20,7 @@ $application = new yii\console\Application([
     'basePath' => dirname(__DIR__),
     'components' => [
         'cache' => [
-            'class' => ArrayCache::class,
+            'class' => yii\caching\ArrayCache::class,
         ],
     ]
 ]);

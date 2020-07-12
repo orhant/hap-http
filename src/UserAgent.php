@@ -3,12 +3,10 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:27:00
+ * @version 12.07.20 13:05:44
  */
 
-/** @noinspection PhpUnused */
 declare(strict_types = 1);
-
 namespace dicr\http;
 
 /**

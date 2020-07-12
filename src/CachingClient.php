@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:16:14
+ * @version 12.07.20 12:54:52
  */
 
 declare(strict_types = 1);
@@ -25,8 +25,6 @@ use function is_int;
  * Client with response caching.
  *
  * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similar for next requests
- *
- * @noinspection PhpUnused
  */
 class CachingClient extends Client
 {
@@ -131,11 +129,11 @@ class CachingClient extends Client
 
     /**
      * Invalidate http-response cache.
-     *
-     * @noinspection PhpUnused
      */
     public function invalidateCache()
     {
-        TagDependency::invalidate($this->cache, self::CACHE_TAGS);
+        if (! empty($this->cache)) {
+            TagDependency::invalidate($this->cache, self::CACHE_TAGS);
+        }
     }
 }

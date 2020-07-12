@@ -4,6 +4,8 @@
       <w>ahrefs</w>
       <w>applebot</w>
       <w>avant</w>
+      <w>avantbrowser</w>
+      <w>baiduspider</w>
       <w>barkrowler</w>
       <w>bingbot</w>
       <w>clarabot</w>
@@ -13,34 +15,61 @@
       <w>ddos</w>
       <w>dicr</w>
       <w>facebookexternalhit</w>
+      <w>facebot</w>
       <w>googlebot</w>
       <w>honorjsn</w>
+      <w>hotbar</w>
       <w>httpclient</w>
       <w>huawei</w>
+      <w>hwjsn</w>
       <w>instagram</w>
+      <w>jooblebot</w>
       <w>khtml</w>
       <w>kinza</w>
+      <w>kirin</w>
+      <w>konturbot</w>
+      <w>lenovo</w>
+      <w>letsearch</w>
+      <w>lightspeed</w>
+      <w>mbbms</w>
       <w>mbstring</w>
       <w>metrika</w>
       <w>midp</w>
       <w>miui</w>
       <w>mozilla</w>
+      <w>mrchrome</w>
+      <w>mrsputnik</w>
       <w>msnbot</w>
+      <w>ncfmixm</w>
       <w>nonhttp</w>
+      <w>odkl</w>
+      <w>openstat</w>
+      <w>oppo</w>
+      <w>pinterestbot</w>
       <w>redmi</w>
       <w>resizer</w>
       <w>roave</w>
       <w>samsung</w>
+      <w>semrush</w>
       <w>seznam</w>
       <w>simplehtmldom</w>
+      <w>sogou</w>
+      <w>statdom</w>
+      <w>subdoms</w>
+      <w>subpath</w>
       <w>tarasov</w>
+      <w>tracemyfile</w>
+      <w>turnitin</w>
       <w>twitterbot</w>
       <w>viber</w>
+      <w>webartex</w>
+      <w>xiao</w>
       <w>yabs</w>
       <w>yandex</w>
       <w>yiisoft</w>
       <w>yowser</w>
       <w>zoominfo</w>
+      <w>zoominfobot</w>
       <w>парсер</w>
       <w>парсеры</w>
       <w>парсит</w>

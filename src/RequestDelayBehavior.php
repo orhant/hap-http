@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:16:14
+ * @version 12.07.20 13:03:26
  */
 
 declare(strict_types = 1);
@@ -17,8 +17,6 @@ use yii\httpclient\Client;
 
 /**
  * Задержка запросов для yii\httpclient\Client
- *
- * @noinspection PhpUnused
  */
 class RequestDelayBehavior extends Behavior
 {
@@ -52,7 +50,7 @@ class RequestDelayBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function events()
     {
@@ -64,8 +62,6 @@ class RequestDelayBehavior extends Behavior
     /**
      * Adjust request.
      *
-     * @noinspection PhpUnused
-     * @noinspection PhpMethodNamingConventionInspection
      * @throws Exception
      */
     public function _beforeSend()

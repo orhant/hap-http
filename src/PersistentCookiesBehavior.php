@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 04.07.20 12:16:14
+ * @version 12.07.20 13:05:02
  */
 
 declare(strict_types = 1);
@@ -23,8 +23,6 @@ use yii\web\CookieCollection;
 
 /**
  * Сохранение Cookies в кэше между запросами.
- *
- * @noinspection PhpUnused
  */
 class PersistentCookiesBehavior extends Behavior
 {
@@ -124,8 +122,6 @@ class PersistentCookiesBehavior extends Behavior
      * Добавляет куки к запросу.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
-     * @noinspection PhpMethodNamingConventionInspection
      */
     public function _beforeSend(RequestEvent $event)
     {
@@ -149,8 +145,6 @@ class PersistentCookiesBehavior extends Behavior
      * Забирает куки из ответа.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
-     * @noinspection PhpMethodNamingConventionInspection
      */
     public function _afterSend(RequestEvent $event)
     {
