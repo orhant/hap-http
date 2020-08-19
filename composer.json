@@ -22,8 +22,10 @@
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
+        "ext-mbstring": "*",
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
+        "dicr/yii2-helper": "~3.1",
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {
@@ -31,7 +33,8 @@
         "phpunit/phpunit": "~9.3"
     },
     "repositories": [
-        {"type": "git", "url": "https://gitlab.com/dicr/yii2-settings.git"},
+        {"type": "gitlab", "url": "https://gitlab.com/dicr/yii2-helper.git"},
+        {"type": "github", "url": "https://github.com/simplehtmldom/simplehtmldom.git"},
         {"type": "composer", "url": "https://asset-packagist.org"}
     ],
     "autoload": {

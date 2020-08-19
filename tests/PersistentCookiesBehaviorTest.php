@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Yii;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
-use yii\httpclient\Exception;
 use yii\web\Cookie;
 use yii\web\CookieCollection;
 
@@ -77,12 +76,21 @@ class PersistentCookiesBehaviorTest extends TestCase
         // делаем первый запрос
         $request = $client->get('https://dicr.org/');
         $response = $request->send();
+
+        // в запросе не должно быть куков
         self::assertSame(0, $request->cookies->count);
+
+        // в ответе должны быть куки
         self::assertGreaterThan(0, $response->cookies->count);
+
+        // запоминаем сколько куков нам прислали
+        $cookiesCount = $response->cookies->count;
 
         // делаем второй запрос
         $request = $client->get('https://dicr.org/');
         $request->send();
-        self::assertGreaterThan(0, $request->cookies->count);
+
+        // в запросе должны быть предыдущие куки
+        self::assertSame($cookiesCount, $request->cookies->count);
     }
 }

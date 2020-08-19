@@ -50,7 +50,7 @@ class RequestDelayBehavior extends Behavior
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function events()
     {

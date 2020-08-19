@@ -20,7 +20,7 @@ use yii\httpclient\RequestEvent;
 class HttpCompressionBehavior extends Behavior
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function events()
     {

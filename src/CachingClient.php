@@ -130,6 +130,8 @@ class CachingClient extends Client
      */
     public function invalidateCache(): void
     {
-        TagDependency::invalidate($this->cache, [__CLASS__]);
+        if (! empty($this->cache)) {
+            TagDependency::invalidate($this->cache, [__CLASS__]);
+        }
     }
 }

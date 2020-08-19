@@ -17,8 +17,6 @@ use yii\httpclient\Exception;
 
 /**
  * Class HttpCompressionBehaviorTest
- *
- * @package dicr\tests
  */
 class HttpCompressionBehaviorTest extends TestCase
 {
