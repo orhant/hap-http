@@ -25,7 +25,7 @@
         "ext-mbstring": "*",
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
-        "dicr/yii2-helper": "~3.1",
+        "dicr/yii2-helper": "~3.4",
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {

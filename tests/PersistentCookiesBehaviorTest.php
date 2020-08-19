@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:37:23
+ * @version 20.08.20 00:00:07
  */
 
 declare(strict_types = 1);
@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Yii;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 use yii\web\Cookie;
 use yii\web\CookieCollection;
 
