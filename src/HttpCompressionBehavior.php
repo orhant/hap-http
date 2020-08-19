@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 03:49:10
+ * @version 19.08.20 23:41:21
  */
 
 declare(strict_types = 1);
@@ -11,14 +11,11 @@ namespace dicr\http;
 
 use Yii;
 use yii\base\Behavior;
-use yii\base\Exception;
 use yii\httpclient\Client;
 use yii\httpclient\RequestEvent;
 
 /**
  * HTTP-compression support for yii\httpclient\Client
- *
- * @noinspection PhpUnused
  */
 class HttpCompressionBehavior extends Behavior
 {
@@ -37,10 +34,9 @@ class HttpCompressionBehavior extends Behavior
      * Adjust request.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
      */
-    public function _beforeSend(RequestEvent $event)
+    public function _beforeSend(RequestEvent $event): void
     {
         // add accept-encoding header
         $headers = $event->request->headers;
@@ -53,17 +49,16 @@ class HttpCompressionBehavior extends Behavior
      * Adjust response.
      *
      * @param RequestEvent $event
-     * @throws Exception
-     * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
+     * @noinspection PhpUsageOfSilenceOperatorInspection
      */
-    public function _afterSend(RequestEvent $event)
+    public function _afterSend(RequestEvent $event): void
     {
         $response = $event->response;
         $encoding = $response->headers->get('content-encoding');
 
         if ($encoding !== null) {
-            $decoded = null;
+            $decoded = false;
 
             switch (strtolower($encoding)) {
                 case 'deflate':
@@ -77,9 +72,6 @@ class HttpCompressionBehavior extends Behavior
                 case 'gzip':
                     $decoded = @gzdecode($response->content);
                     break;
-
-                default:
-                    throw new Exception('unknown encode method: ' . $encoding);
             }
 
             if ($decoded !== false) {

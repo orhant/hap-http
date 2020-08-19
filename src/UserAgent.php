@@ -1,12 +1,11 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:27:00
+ * @version 19.08.20 23:19:44
  */
 
-/** @noinspection PhpUnused */
 declare(strict_types = 1);
 
 namespace dicr\http;

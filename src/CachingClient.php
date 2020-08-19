@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 18.02.20 16:40:11
+ * @version 19.08.20 23:42:16
  */
 
 declare(strict_types = 1);
@@ -16,24 +16,21 @@ use yii\caching\CacheInterface;
 use yii\caching\TagDependency;
 use yii\di\Instance;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 use yii\httpclient\Request;
 use yii\httpclient\Response;
+
 use function is_int;
 
 /**
  * Client with response caching.
  *
  * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similar for next requests
- *
- * @noinspection PhpUnused
  */
 class CachingClient extends Client
 {
-    /** @var \yii\caching\CacheInterface */
+    /** @var CacheInterface */
     public $cache = 'cache';
-
-    /** @var string tags fro TagDependency */
-    public const CACHE_TAGS = [__CLASS__];
 
     /**
      * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
@@ -46,7 +43,7 @@ class CachingClient extends Client
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -72,10 +69,10 @@ class CachingClient extends Client
     /**
      * Return cache key for request.
      *
-     * @param \yii\httpclient\Request $request
+     * @param Request $request
      * @return string[]
      */
-    protected function cacheKey(Request $request)
+    protected function cacheKey(Request $request): array
     {
         $keyRequest = $this->cacheCookies ? $request : (clone $request)->setCookies([]);
 
@@ -85,8 +82,8 @@ class CachingClient extends Client
     /**
      * @inheritDoc
      *
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function send($request)
     {
@@ -121,7 +118,7 @@ class CachingClient extends Client
 
             // save response
             $this->cache->set($cacheKey, $cacheResponse, $this->cacheDuration, new TagDependency([
-                'tags' => self::CACHE_TAGS
+                'tags' => [__CLASS__]
             ]));
         }
 
@@ -130,11 +127,9 @@ class CachingClient extends Client
 
     /**
      * Invalidate http-response cache.
-     *
-     * @noinspection PhpUnused
      */
-    public function invalidateCache()
+    public function invalidateCache(): void
     {
-        TagDependency::invalidate($this->cache, self::CACHE_TAGS);
+        TagDependency::invalidate($this->cache, [__CLASS__]);
     }
 }

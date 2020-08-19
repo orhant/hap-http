@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 14.02.20 18:24:38
+ * @version 19.08.20 23:37:23
  */
 
 declare(strict_types = 1);
@@ -13,29 +13,17 @@ namespace dicr\tests;
 use dicr\http\PersistentCookiesBehavior;
 use PHPUnit\Framework\TestCase;
 use Yii;
-use yii\caching\FileCache;
 use yii\caching\TagDependency;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 use yii\web\Cookie;
 use yii\web\CookieCollection;
 
 /**
  * Class PersistentCookiesBehaviorTest
- *
- * @package dicr\tests
  */
 class PersistentCookiesBehaviorTest extends TestCase
 {
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
-    public static function setUpBeforeClass()
-    {
-        Yii::$app->set('cache', [
-            'class' => FileCache::class,
-        ]);
-    }
-
     /**
      * Тест определения домена из запроса.
      */
@@ -58,9 +46,7 @@ class PersistentCookiesBehaviorTest extends TestCase
 
         $domain = 'test.com';
 
-        $behavior = new PersistentCookiesBehavior([
-            'store' => 'cache'
-        ]);
+        $behavior = new PersistentCookiesBehavior();
 
         // сохраняем пустое значение
         $behavior->saveCookies($domain, new CookieCollection());
@@ -75,14 +61,13 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Проверка паузы запроса.
      *
-     * @throws \yii\httpclient\Exception
+     * @throws Exception
      */
     public function testRequest()
     {
         $client = new Client([
             'as cookies' => [
-                'class' => PersistentCookiesBehavior::class,
-                'store' => 'cache',
+                'class' => PersistentCookiesBehavior::class
             ]
         ]);
 
@@ -90,16 +75,14 @@ class PersistentCookiesBehaviorTest extends TestCase
         TagDependency::invalidate(Yii::$app->cache, 'www.google.com');
 
         // делаем первый запрос
-        $request = $client->get('https://www.google.com/');
+        $request = $client->get('https://dicr.org/');
         $response = $request->send();
         self::assertSame(0, $request->cookies->count);
         self::assertGreaterThan(0, $response->cookies->count);
 
         // делаем второй запрос
-        $request = $client->get('https://www.google.com/');
-        $response = $request->send();
-
+        $request = $client->get('https://dicr.org/');
+        $request->send();
         self::assertGreaterThan(0, $request->cookies->count);
-        self::assertSame(0, $response->cookies->count);
     }
 }

@@ -1,8 +1,10 @@
 {
     "name": "dicr/yii2-http",
     "type": "yii2-extension",
-    "description": "Утилиты HTTP для Yii2",
     "license": "MIT",
+    "homepage": "https://gitlab.com/dicr/yii2-http",
+    "description": "Утилиты HTTP для Yii2",
+    "keywords": ["dicr", "yii2", "http"],
     "authors": [
         {
             "name": "Igor Tarasov",
@@ -11,33 +13,26 @@
             "role": "developer"
         }
     ],
-    "keywords": ["dicr", "php", "yii2", "http"],
-    "homepage": "https://gitlab.com/dicr/yii2-http",
     "support": {
         "source": "https://gitlab.com/dicr/yii2-http.git"
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2",
+        "php": "~7.2",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "yiisoft/yii2": "~2.0.32",
-        "yiisoft/yii2-httpclient": "~2.0.12",
+        "yiisoft/yii2": "~2.0",
+        "yiisoft/yii2-httpclient": "~2.0",
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "~7.5.20"
+        "phpunit/phpunit": "~9.3"
     },
     "repositories": [
-        {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }, {
-            "type": "git",
-            "url": "https://gitlab.com/dicr/yii2-settings.git"
-        }
+        {"type": "git", "url": "https://gitlab.com/dicr/yii2-settings.git"},
+        {"type": "composer", "url": "https://asset-packagist.org"}
     ],
     "autoload": {
         "psr-4": {

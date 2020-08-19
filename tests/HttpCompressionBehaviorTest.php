@@ -1,21 +1,19 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:26:07
+ * @version 19.08.20 23:40:23
  */
 
 declare(strict_types = 1);
 
 namespace dicr\tests;
 
-use dicr\http\PersistentCookiesBehavior;
+use dicr\http\HttpCompressionBehavior;
 use PHPUnit\Framework\TestCase;
-use Yii;
-use yii\caching\ApcCache;
-use yii\caching\TagDependency;
 use yii\httpclient\Client;
+use yii\httpclient\Exception;
 
 /**
  * Class HttpCompressionBehaviorTest
@@ -27,24 +25,19 @@ class HttpCompressionBehaviorTest extends TestCase
     /**
      * Проверка паузы запроса.
      *
-     * @throws \yii\httpclient\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
      */
     public function testCompression()
     {
-        Yii::$app->set('cache', [
-            'class' => ApcCache::class,
-        ]);
-
         $client = new Client([
-            'as cookies' => [
-                'class' => PersistentCookiesBehavior::class,
-                'cache' => 'cache',
+            'as compression' => [
+                'class' => HttpCompressionBehavior::class
             ]
         ]);
 
-        TagDependency::invalidate(Yii::$app->cache, 'www.google.com');
         $request = $client->get('https://www.google.com/');
-        $request->send();
+        $response = $request->send();
+
+        self::assertSame('gzip', $response->headers->get('content-encoding'));
     }
 }

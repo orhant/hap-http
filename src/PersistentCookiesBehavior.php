@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 03:50:00
+ * @version 19.08.20 23:18:59
  */
 
 declare(strict_types = 1);
@@ -18,24 +18,23 @@ use yii\di\Instance;
 use yii\httpclient\Client;
 use yii\httpclient\Request;
 use yii\httpclient\RequestEvent;
+use yii\web\Cookie;
 use yii\web\CookieCollection;
 
 /**
  * Сохранение Cookies в кэше между запросами.
- *
- * @noinspection PhpUnused
  */
 class PersistentCookiesBehavior extends Behavior
 {
-    /** @var \yii\caching\CacheInterface кэш куков (ключ привязывается к домену запроса) */
+    /** @var CacheInterface кэш куков (ключ привязывается к домену запроса) */
     public $store = 'cache';
 
-    /** @var int|null время хранения в кэше */
+    /** @var ?int время хранения в кэше */
     public $cacheDuration;
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -77,9 +76,9 @@ class PersistentCookiesBehavior extends Behavior
      * Загружает их кэша куки для домена.
      *
      * @param string $domain
-     * @return \yii\web\CookieCollection|null
+     * @return ?CookieCollection
      */
-    public function loadCookies(string $domain)
+    public function loadCookies(string $domain): ?CookieCollection
     {
         $key = static::cacheKey($domain);
 
@@ -111,10 +110,10 @@ class PersistentCookiesBehavior extends Behavior
     /**
      * Возвращает домен запроса.
      *
-     * @param \yii\httpclient\Request $request
+     * @param Request $request
      * @return string
      */
-    public static function domain(Request $request)
+    public static function domain(Request $request): string
     {
         return parse_url($request->fullUrl, PHP_URL_HOST);
     }
@@ -123,10 +122,9 @@ class PersistentCookiesBehavior extends Behavior
      * Добавляет куки к запросу.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
      */
-    public function _beforeSend(RequestEvent $event)
+    public function _beforeSend(RequestEvent $event): void
     {
         // запрос
         $request = $event->request;
@@ -148,10 +146,9 @@ class PersistentCookiesBehavior extends Behavior
      * Забирает куки из ответа.
      *
      * @param RequestEvent $event
-     * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
      */
-    public function _afterSend(RequestEvent $event)
+    public function _afterSend(RequestEvent $event): void
     {
         $response = $event->response;
         if ($response->cookies->count > 0) {
@@ -167,7 +164,7 @@ class PersistentCookiesBehavior extends Behavior
             if ($cookies === null) {
                 $cookies = $response->cookies;
             } else {
-                /** @var \yii\web\Cookie $cookie */
+                /** @var Cookie $cookie */
                 foreach ($response->cookies->toArray() as $cookie) {
                     $cookies->add($cookie);
                     Yii::debug('Получен cookie: ' . $cookie->name . '=' . $cookie->value, __METHOD__);

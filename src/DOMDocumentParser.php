@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 06.03.20 19:59:34
+ * @version 19.08.20 23:42:16
  */
 
 declare(strict_types = 1);
@@ -14,7 +14,9 @@ use DOMDocument;
 use yii\base\BaseObject;
 use yii\httpclient\ParserInterface;
 use yii\httpclient\Response;
+
 use function preg_match;
+
 use const LIBXML_DTDLOAD;
 use const LIBXML_NOERROR;
 use const LIBXML_NOWARNING;
@@ -22,8 +24,6 @@ use const LIBXML_PARSEHUGE;
 
 /**
  * Парсер HTML-текста в \DOMDocument.
- *
- * @noinspection PhpUnused
  */
 class DOMDocumentParser extends BaseObject implements ParserInterface
 {
@@ -34,10 +34,10 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      * Парсит контент.
      *
      * @param string $content HTML-контент
-     * @param string $charset кодировка
-     * @return \DOMDocument
+     * @param ?string $charset кодировка
+     * @return DOMDocument
      */
-    public function parseContent(string $content, string $charset = null)
+    public function parseContent(string $content, ?string $charset = null)
     {
         if ($charset === null) {
             $charset = 'UTF-8';

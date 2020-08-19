@@ -1,14 +1,15 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 16.02.20 04:11:16
+ * @version 19.08.20 23:19:30
  */
 
 declare(strict_types = 1);
 namespace dicr\http;
 
+use Exception;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
@@ -16,8 +17,6 @@ use yii\httpclient\Client;
 
 /**
  * Задержка запросов для yii\httpclient\Client
- *
- * @noinspection PhpUnused
  */
 class RequestDelayBehavior extends Behavior
 {
@@ -29,7 +28,7 @@ class RequestDelayBehavior extends Behavior
 
     /**
      * @inheritDoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -63,11 +62,10 @@ class RequestDelayBehavior extends Behavior
     /**
      * Adjust request.
      *
-     * @noinspection PhpUnused
      * @noinspection PhpMethodNamingConventionInspection
-     * @throws \Exception
+     * @throws Exception
      */
-    public function _beforeSend()
+    public function _beforeSend(): void
     {
         $min = (int)round($this->delayMin * 1000000);
         $max = (int)round($this->delayMax * 1000000);
@@ -77,7 +75,5 @@ class RequestDelayBehavior extends Behavior
             Yii::debug(sprintf('Ожидаем паузу: %.1fs', $delay / 1000000), __METHOD__);
             usleep($delay);
         }
-
-        return true;
     }
 }
