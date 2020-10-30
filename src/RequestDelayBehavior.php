@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:19:30
+ * @version 30.10.20 20:40:53
  */
 
 declare(strict_types = 1);
@@ -30,7 +30,7 @@ class RequestDelayBehavior extends Behavior
      * @inheritDoc
      * @throws InvalidConfigException
      */
-    public function init()
+    public function init() : void
     {
         parent::init();
 
@@ -52,7 +52,7 @@ class RequestDelayBehavior extends Behavior
     /**
      * @inheritdoc
      */
-    public function events()
+    public function events() : array
     {
         return [
             Client::EVENT_BEFORE_SEND => '_beforeSend',

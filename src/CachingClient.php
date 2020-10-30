@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:42:16
+ * @version 30.10.20 20:34:19
  */
 
 declare(strict_types = 1);
@@ -45,7 +45,7 @@ class CachingClient extends Client
      * @inheritDoc
      * @throws InvalidConfigException
      */
-    public function init()
+    public function init() : void
     {
         parent::init();
 
@@ -72,7 +72,7 @@ class CachingClient extends Client
      * @param Request $request
      * @return string[]
      */
-    protected function cacheKey(Request $request): array
+    protected function cacheKey(Request $request) : array
     {
         $keyRequest = $this->cacheCookies ? $request : (clone $request)->setCookies([]);
 
@@ -81,11 +81,9 @@ class CachingClient extends Client
 
     /**
      * @inheritDoc
-     *
-     * @throws InvalidConfigException
      * @throws Exception
      */
-    public function send($request)
+    public function send($request) : Response
     {
         /** @var string[]|null $cacheKey key for cache */
         $cacheKey = null;
@@ -128,7 +126,7 @@ class CachingClient extends Client
     /**
      * Invalidate http-response cache.
      */
-    public function invalidateCache(): void
+    public function invalidateCache() : void
     {
         if (! empty($this->cache)) {
             TagDependency::invalidate($this->cache, [__CLASS__]);

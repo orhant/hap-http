@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:41:21
+ * @version 30.10.20 20:39:30
  */
 
 declare(strict_types = 1);
@@ -22,7 +22,7 @@ class HttpCompressionBehavior extends Behavior
     /**
      * @inheritdoc
      */
-    public function events()
+    public function events() : array
     {
         return [
             Client::EVENT_BEFORE_SEND => '_beforeSend',

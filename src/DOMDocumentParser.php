@@ -1,9 +1,9 @@
 <?php
-/**
+/*
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:42:16
+ * @version 30.10.20 20:44:35
  */
 
 declare(strict_types = 1);
@@ -12,6 +12,7 @@ namespace dicr\http;
 
 use DOMDocument;
 use yii\base\BaseObject;
+use yii\base\Exception;
 use yii\httpclient\ParserInterface;
 use yii\httpclient\Response;
 
@@ -36,8 +37,9 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      * @param string $content HTML-контент
      * @param ?string $charset кодировка
      * @return DOMDocument
+     * @throws Exception
      */
-    public function parseContent(string $content, ?string $charset = null)
+    public function parseContent(string $content, ?string $charset = null) : DOMDocument
     {
         if ($charset === null) {
             $charset = 'UTF-8';
@@ -64,19 +66,24 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
         $doc->substituteEntities = false;
 
         // пытаемся загрузить HTML
+        libxml_clear_errors();
         if (! $doc->loadHTML($content, LIBXML_DTDLOAD | LIBXML_PARSEHUGE | LIBXML_NOWARNING |
             LIBXML_NOERROR | LIBXML_NOCDATA | LIBXML_NONET | LIBXML_NOXMLDECL)) {
-            return null;
+            $err = libxml_get_last_error();
+            throw new Exception($err ? $err->message . ' at ' . $err->file . ':' . $err->column :
+                'Ошибка парсинга HTML');
         }
 
         $doc->normalizeDocument();
+
         return $doc;
     }
 
     /**
      * @inheritdoc
+     * @throws Exception
      */
-    public function parse(Response $response)
+    public function parse(Response $response) : DOMDocument
     {
         // получаем кодировку ответа
         $contentType = $response->getHeaders()->get('content-type', '');

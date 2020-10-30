@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:23:24
+ * @version 30.10.20 20:41:00
  */
 
 declare(strict_types = 1);
@@ -25,7 +25,7 @@ class RequestDelayBehaviorTest extends TestCase
      *
      * @throws Exception
      */
-    public function testDelay()
+    public function testDelay() : void
     {
         $delay = 2.0;
 

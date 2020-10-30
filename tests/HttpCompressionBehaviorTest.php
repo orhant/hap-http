@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:40:23
+ * @version 30.10.20 20:39:41
  */
 
 declare(strict_types = 1);
@@ -25,7 +25,7 @@ class HttpCompressionBehaviorTest extends TestCase
      *
      * @throws Exception
      */
-    public function testCompression()
+    public function testCompression() : void
     {
         $client = new Client([
             'as compression' => [

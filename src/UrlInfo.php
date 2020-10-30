@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 20.08.20 02:42:08
+ * @version 30.10.20 20:43:13
  */
 
 declare(strict_types = 1);
@@ -118,7 +118,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * {@inheritDoc}
      * @throws InvalidConfigException
      */
-    public function init()
+    public function init() : void
     {
         parent::init();
 
@@ -154,7 +154,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @return string[]
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function attributes()
+    public function attributes() : array
     {
         return ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'];
     }
@@ -163,7 +163,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @inheritDoc
      * (для Arrayable)
      */
-    public function fields()
+    public function fields() : array
     {
         $attributes = $this->attributes();
 
@@ -174,7 +174,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @inheritDoc
      * (для Arrayable)
      */
-    public function extraFields()
+    public function extraFields() : array
     {
         return ['hostInfo', 'requestUri', 'isAbsolute'];
     }
@@ -529,7 +529,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         try {
             return $this->toString();

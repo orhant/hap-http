@@ -3,6 +3,8 @@
     <words>
       <w>ahrefs</w>
       <w>applebot</w>
+      <w>arrayable</w>
+      <w>aswg</w>
       <w>avant</w>
       <w>avantbrowser</w>
       <w>baiduspider</w>
@@ -18,6 +20,7 @@
       <w>facebot</w>
       <w>googlebot</w>
       <w>honorjsn</w>
+      <w>hostinfo</w>
       <w>hotbar</w>
       <w>httpclient</w>
       <w>huawei</w>
@@ -50,6 +53,8 @@
       <w>simplehtmldom</w>
       <w>sogou</w>
       <w>statdom</w>
+      <w>subdoms</w>
+      <w>subpath</w>
       <w>tarasov</w>
       <w>tracemyfile</w>
       <w>turnitin</w>
@@ -64,6 +69,7 @@
       <w>zoominfobot</w>
       <w>парсер</w>
       <w>парсеры</w>
+      <w>парсинга</w>
       <w>парсит</w>
     </words>
   </dictionary>

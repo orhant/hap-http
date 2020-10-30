@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:16:10
+ * @version 30.10.20 20:43:13
  */
 
 declare(strict_types = 1);
@@ -61,7 +61,7 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(Response $response)
+    public function parse(Response $response) : HtmlDocument
     {
         return $this->parseContent((string)$response->content);
     }

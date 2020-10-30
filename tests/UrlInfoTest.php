@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 20.08.20 02:39:44
+ * @version 30.10.20 20:43:13
  */
 
 declare(strict_types = 1);
@@ -35,7 +35,7 @@ class UrlInfoTest extends TestCase
      *
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function testNormalizeHost()
+    public function testNormalizeHost() : void
     {
         foreach (self::TEST_NORMALIZE_HOST as $dom => $res) {
             self::assertSame($res, Url::normalizeHost($dom));
@@ -64,7 +64,7 @@ class UrlInfoTest extends TestCase
      *
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function testNormalizePath()
+    public function testNormalizePath() : void
     {
         foreach (self::TEST_NORMALIZE_PATH as $path => $res) {
             self::assertSame($res, Url::normalizePath($path));
@@ -90,7 +90,7 @@ class UrlInfoTest extends TestCase
      *
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function testNormalizeQuery()
+    public function testNormalizeQuery() : void
     {
         foreach (self::TEST_NORMALIZE_QUERY as $src => $res) {
             self::assertEquals($res, Url::normalizeQuery($src), 'src: ' . $src);
@@ -108,7 +108,7 @@ class UrlInfoTest extends TestCase
     /**
      * Тест определения поддомена
      */
-    public function testSubdomain()
+    public function testSubdomain() : void
     {
         $urlInfo = new UrlInfo();
         foreach (self::TEST_SUBDOMAIN as [$domain, $parent, $result]) {
@@ -149,7 +149,7 @@ class UrlInfoTest extends TestCase
     /**
      * Тестирование функции sameSite
      */
-    public function testSameSite()
+    public function testSameSite() : void
     {
         /*
         $u1 = new UrlInfo('https://site.ru');
@@ -300,7 +300,7 @@ class UrlInfoTest extends TestCase
     /**
      * Test UrlInfo::toAbsolute
      */
-    public function testAbsolute()
+    public function testAbsolute() : void
     {
         /*
         $u1 = new UrlInfo('http://site.ru/path/to.php?prod=1#link');
@@ -333,7 +333,7 @@ class UrlInfoTest extends TestCase
      *
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function testNonHttp()
+    public function testNonHttp() : void
     {
         foreach (self::TEST_NONHTTP as $src => $dst) {
             $url = UrlInfo::fromString($src);

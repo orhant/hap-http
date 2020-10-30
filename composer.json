@@ -18,19 +18,19 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "~7.2",
+        "php": "~7.3",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
-        "dicr/yii2-helper": "~3.4",
+        "dicr/yii2-helper": "~4.0",
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "~9.3"
+        "phpunit/phpunit": "~9.4"
     },
     "repositories": [
         {"type": "gitlab", "url": "https://gitlab.com/dicr/yii2-helper.git"},

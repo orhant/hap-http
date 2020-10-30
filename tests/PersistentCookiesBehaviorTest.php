@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 20.08.20 00:00:07
+ * @version 30.10.20 20:40:38
  */
 
 declare(strict_types = 1);
@@ -27,7 +27,7 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Тест определения домена из запроса.
      */
-    public function testDomain()
+    public function testDomain() : void
     {
         $client = new Client();
         $request = $client->get('https://www.google.com');
@@ -37,7 +37,7 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Тест загрузки/сохранения куков.
      */
-    public function testLoadCookies()
+    public function testLoadCookies() : void
     {
         $testData = new CookieCollection([
             'name1' => new Cookie(['name' => 'name1', 'value' => 'value1']),
@@ -63,7 +63,7 @@ class PersistentCookiesBehaviorTest extends TestCase
      *
      * @throws Exception
      */
-    public function testRequest()
+    public function testRequest() : void
     {
         $client = new Client([
             'as cookies' => [
