@@ -3,7 +3,7 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 02.12.20 23:50:13
+ * @version 02.12.20 23:56:58
  */
 
 declare(strict_types = 1);
@@ -485,7 +485,7 @@ class UrlInfo extends Model
         }
 
         // добавляем параметры
-        $query = $this->getQuery(true);
+        $query = (string)$this->getQuery(true);
         if ($query !== '') {
             $uri .= '?' . $query;
         }
