@@ -3,7 +3,7 @@
     "type": "yii2-extension",
     "license": "MIT",
     "homepage": "https://gitlab.com/dicr/yii2-http",
-    "description": "Утилиты HTTP для Yii2",
+    "description": "HTTP-утилиты для Yii2",
     "keywords": ["dicr", "yii2", "http"],
     "authors": [
         {
@@ -23,9 +23,12 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
+
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
+
         "dicr/yii2-helper": "~4.0",
+
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
     "require-dev": {

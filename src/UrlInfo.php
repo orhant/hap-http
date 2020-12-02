@@ -3,31 +3,25 @@
  * @copyright 2019-2020 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 30.10.20 20:43:13
+ * @version 02.12.20 23:50:13
  */
 
 declare(strict_types = 1);
 namespace dicr\http;
 
-use ArrayAccess;
-use dicr\helper\ArrayAccessTrait;
 use dicr\helper\Url;
 use InvalidArgumentException;
 use LogicException;
 use Throwable;
 use Yii;
-use yii\base\Arrayable;
-use yii\base\ArrayableTrait;
-use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
+use yii\base\Model;
 
-use function array_combine;
 use function gettype;
 use function in_array;
 use function is_array;
 use function is_string;
 use function mb_strpos;
-use function mb_strtolower;
 use function mb_substr;
 
 /**
@@ -42,15 +36,15 @@ use function mb_substr;
  * @property array $query
  * @property ?string $fragment
  *
- * @property-read string $hostInfo user:pass@host:port
- * @property-read string $requestUri строка запроса (путь?параметры#фрагмент)
+ * Virtual
+ *
+ * @property-read ?string $hostInfo user:pass@host:port
+ * @property-read ?string $baseUrl scheme://hostInfo
+ * @property-read ?string $requestUri /path?query#fragment
  * @property-read bool $isAbsolute признак абсолютной ссылки
  */
-class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
+class UrlInfo extends Model
 {
-    use ArrayableTrait;
-    use ArrayAccessTrait;
-
     /** @var array стандартные сервисы и порты */
     public const SERVICES = [
         'http' => 80,
@@ -85,8 +79,8 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
     /** @var ?string путь */
     private $_path;
 
-    /** @var array параметры key => $val */
-    private $_query = [];
+    /** @var ?array параметры key => $val */
+    private $_query;
 
     /** @var ?string фрагмент */
     private $_fragment;
@@ -149,25 +143,11 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
     }
 
     /**
-     * Возвращает список аттрибутов модели (для Arrayable).
-     *
-     * @return string[]
-     * @noinspection PhpMethodMayBeStaticInspection
+     * @inheritDoc
      */
     public function attributes() : array
     {
         return ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'];
-    }
-
-    /**
-     * @inheritDoc
-     * (для Arrayable)
-     */
-    public function fields() : array
-    {
-        $attributes = $this->attributes();
-
-        return array_combine($attributes, $attributes);
     }
 
     /**
@@ -185,15 +165,17 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param string $url адрес URL
      * @return ?static
      */
-    public static function fromString(string $url): ?self
+    public static function fromString(string $url) : ?self
     {
+        $self = null;
+
         try {
-            return new static($url);
+            $self = new static($url);
         } catch (Throwable $ex) {
             Yii::debug($ex, __METHOD__);
         }
 
-        return null;
+        return $self;
     }
 
     /**
@@ -202,7 +184,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param int $port
      * @return ?string
      */
-    public static function schemeByPort(int $port): ?string
+    public static function schemeByPort(int $port) : ?string
     {
         foreach (self::SERVICES as $scheme => $p) {
             if ($p === $port) {
@@ -219,7 +201,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param string $scheme
      * @return ?int
      */
-    public static function portByScheme(string $scheme): ?int
+    public static function portByScheme(string $scheme) : ?int
     {
         foreach (self::SERVICES as $sch => $port) {
             if ($sch === $scheme) {
@@ -235,10 +217,9 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?string
      */
-    public function getScheme(): ?string
+    public function getScheme() : ?string
     {
-        return $this->_scheme === null && $this->_port !== null ?
-            static::schemeByPort($this->_port) : $this->_scheme;
+        return $this->_scheme ?? ($this->_port === null ? null : static::schemeByPort($this->_port));
     }
 
     /**
@@ -247,10 +228,10 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $scheme
      * @return $this
      */
-    public function setScheme(?string $scheme): self
+    public function setScheme(?string $scheme) : self
     {
         $scheme = (string)$scheme;
-        $this->_scheme = $scheme === '' ? null : mb_strtolower($scheme);
+        $this->_scheme = $scheme === '' ? null : strtolower($scheme);
 
         return $this;
     }
@@ -260,7 +241,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?string
      */
-    public function getUser(): ?string
+    public function getUser() : ?string
     {
         return $this->_user;
     }
@@ -271,7 +252,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $user
      * @return $this
      */
-    public function setUser(?string $user): self
+    public function setUser(?string $user) : self
     {
         $user = (string)$user;
         $this->_user = $user === '' ? null : $user;
@@ -284,7 +265,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?string
      */
-    public function getPass(): ?string
+    public function getPass() : ?string
     {
         return $this->_pass;
     }
@@ -295,7 +276,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $pass
      * @return $this
      */
-    public function setPass(?string $pass): self
+    public function setPass(?string $pass) : self
     {
         $pass = (string)$pass;
         $this->_pass = $pass === '' ? null : $pass;
@@ -309,7 +290,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param bool $toAscii преобразовать из UTF-8 в ASCII IDN
      * @return ?string хост
      */
-    public function getHost(bool $toAscii = false): ?string
+    public function getHost(bool $toAscii = false) : ?string
     {
         return $this->_host !== null && $toAscii ? Url::idnToAscii($this->_host) : $this->_host;
     }
@@ -320,7 +301,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $host
      * @return $this
      */
-    public function setHost(?string $host): self
+    public function setHost(?string $host) : self
     {
         $host = (string)$host;
         $this->_host = $host !== '' ? Url::normalizeHost($host) : null;
@@ -333,10 +314,9 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?int порт
      */
-    public function getPort(): ?int
+    public function getPort() : ?int
     {
-        return $this->_port === null && $this->_scheme !== null ?
-            static::portByScheme($this->_scheme) : $this->_port;
+        return $this->_port ?? ($this->_scheme === null ? null : static::portByScheme($this->_scheme));
     }
 
     /**
@@ -345,7 +325,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?int $port
      * @return $this
      */
-    public function setPort(?int $port): self
+    public function setPort(?int $port) : self
     {
         if ($port !== null && ($port < 0 || $port > 65535)) {
             throw new InvalidArgumentException('port');
@@ -361,7 +341,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?string
      */
-    public function getPath(): ?string
+    public function getPath() : ?string
     {
         // если задан хост, то нормализуем путь
         if ($this->_host !== null) {
@@ -377,7 +357,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $path
      * @return $this
      */
-    public function setPath(?string $path): self
+    public function setPath(?string $path) : self
     {
         $path = Url::normalizePath((string)$path);
         $this->_path = $path === '' ? null : $path;
@@ -389,22 +369,26 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * Возвращает параметры запроса.
      *
      * @param bool $toString преобразовать в строку
-     * @return array|string параметры запроса
+     * @return array|string|null параметры запроса
      */
     public function getQuery(bool $toString = false)
     {
-        return $toString ? Url::buildQuery($this->_query ?: []) : $this->_query;
+        if ($this->_query === null) {
+            return null;
+        }
+
+        return $toString ? Url::buildQuery($this->_query) : $this->_query;
     }
 
     /**
      * Устанавливает параметры запроса
      *
-     * @param array|string $query
+     * @param array|string|null $query
      * @return $this
      */
-    public function setQuery($query): self
+    public function setQuery($query) : self
     {
-        $this->_query = empty($query) ? [] : Url::normalizeQuery($query);
+        $this->_query = $query === null ? null : (Url::normalizeQuery($query) ?: null);
 
         return $this;
     }
@@ -414,7 +398,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return ?string фрагмент
      */
-    public function getFragment(): ?string
+    public function getFragment() : ?string
     {
         return $this->_fragment;
     }
@@ -425,10 +409,10 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param ?string $fragment
      * @return $this
      */
-    public function setFragment(?string $fragment): self
+    public function setFragment(?string $fragment) : self
     {
-        $fragment = (string)$fragment;
-        $this->_fragment = $fragment === '' ? null : ltrim($fragment, '#');
+        $fragment = ltrim((string)$fragment, '#');
+        $this->_fragment = $fragment === '' ? null : $fragment;
 
         return $this;
     }
@@ -439,7 +423,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param bool $toAscii преобразовать домен из UTF-8 в ASCII
      * @return ?string
      */
-    public function getHostInfo(bool $toAscii = false): ?string
+    public function getHostInfo(bool $toAscii = false) : ?string
     {
         $hostInfo = '';
 
@@ -461,7 +445,30 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
             }
         }
 
-        return $hostInfo;
+        return $hostInfo ?: null;
+    }
+
+    /**
+     * Базовый URL (scheme :// hostInfo)
+     *
+     * @param bool $toAscii
+     * @return string|null
+     */
+    public function getBaseUrl(bool $toAscii = false) : ?string
+    {
+        $parts = [];
+
+        $scheme = $this->scheme;
+        if ($scheme !== null) {
+            $parts[] = $scheme . '://';
+        }
+
+        $hostInfo = $this->getHostInfo($toAscii);
+        if ($hostInfo !== null) {
+            $parts[] = $hostInfo;
+        }
+
+        return empty($parts) ? null : implode('', $parts);
     }
 
     /**
@@ -470,7 +477,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param bool $fragment добавить #fragment
      * @return string путь?параметры#фрагмент
      */
-    public function getRequestUri(bool $fragment = true): string
+    public function getRequestUri(bool $fragment = true) : ?string
     {
         $uri = '';
         if ($this->_path !== null) {
@@ -487,7 +494,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
             $uri .= '#' . $this->_fragment;
         }
 
-        return $uri;
+        return $uri ?: null;
     }
 
     /**
@@ -496,7 +503,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param bool $toAscii преобразовать домен из UTF в ASCII IDN
      * @return string полный url
      */
-    public function toString(bool $toAscii = false): string
+    public function toString(bool $toAscii = false) : string
     {
         $url = '';
 
@@ -545,7 +552,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *
      * @return bool
      */
-    public function getIsAbsolute(): bool
+    public function getIsAbsolute() : bool
     {
         return $this->_scheme !== null;
     }
@@ -556,7 +563,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param static $base базовый абсолютный URL
      * @return static полный URL
      */
-    public function toAbsolute(self $base): self
+    public function toAbsolute(self $base) : self
     {
         if ($this->isAbsolute) {
             return clone $this;
@@ -573,7 +580,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
         $start = null;
         if ($this->_scheme !== null) {
             $start = 'scheme';
-        } elseif ($this->hostInfo !== '') {
+        } elseif ($this->hostInfo !== null) {
             $start = 'hostinfo';
         } elseif ($this->_path !== null) {
             $start = 'path';
@@ -644,10 +651,9 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @return ?string string - имя поддомена,
      *         null - если $domain не является поддоменом родительского
      */
-    public function getSubdomain(string $parent): ?string
+    public function getSubdomain(string $parent) : ?string
     {
-        $parent = trim($parent);
-        if (empty($parent)) {
+        if ($parent === '') {
             return null;
         }
 
@@ -664,7 +670,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param string $parent родительский домен
      * @return bool true если $domain != $parent и является поддоменом $parent
      */
-    public function isSubdomain(string $parent): bool
+    public function isSubdomain(string $parent) : bool
     {
         if ($this->_host === null) {
             return false;
@@ -679,7 +685,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @param string $domain сравниваемый домен
      * @return bool true, если $domain1 == $domain2 или один из них является поддоменом другого
      */
-    public function isDomainRelated(string $domain): bool
+    public function isDomainRelated(string $domain) : bool
     {
         if ($this->_host === null) {
             return false;
@@ -700,7 +706,7 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      *        - subpath - считать только ссылки в заданном пути (на уровень ниже) = false
      * @return bool true если тот же сайт
      */
-    public function isSameSite(self $other, array $options = []): bool
+    public function isSameSite(self $other, array $options = []) : bool
     {
         $subdoms = ! empty($options['subdoms']); // разрешать поддомены
         $subpath = ! empty($options['subpath']); // разрешать только подкаталоги в пути
@@ -745,16 +751,16 @@ class UrlInfo extends BaseObject implements Arrayable, ArrayAccess
      * @throws LogicException url не абсолютный
      * @link https://yandex.ru/support/webmaster/controlling-robot/robots-txt.html
      */
-    public function matchRobotsMask(string $mask): bool
+    public function matchRobotsMask(string $mask) : bool
     {
-        $mask = trim($mask);
         if ($mask === '') {
             return false;
         }
 
-        $regex = '~^' . str_replace(
-                ['\*', '\$'], ['.*', '$'], preg_quote($mask, '~')
-            ) . '~us';
+        $regex =
+            '~^' .
+            str_replace(['\*', '\$'], ['.*', '$'], preg_quote($mask, '~')) .
+            '~us';
 
         return (bool)preg_match($regex, $this->requestUri);
     }
