@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 02.12.20 23:56:58
+ * @version 21.01.21 18:18:07
  */
 
 declare(strict_types = 1);
@@ -617,7 +617,7 @@ class UrlInfo extends Model
                         $full->_path .= $thisPath;
                     } else {
                         // удаляем последний компонент из базового
-                        $path = preg_split('~/+~um', $basePath, -1, PREG_SPLIT_NO_EMPTY);
+                        $path = (array)preg_split('~/+~um', $basePath, -1, PREG_SPLIT_NO_EMPTY);
                         if (! empty($path)) {
                             array_pop($path);
                         }
@@ -633,8 +633,12 @@ class UrlInfo extends Model
             case 'query':
                 $full->query = $this->query;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'fragment':
                 $full->fragment = $this->fragment;
+
+            default:
+                break;
         }
 
         return $full;

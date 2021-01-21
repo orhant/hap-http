@@ -18,7 +18,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "~7.3",
+        "php": "~7.4",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
@@ -33,12 +33,12 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "~9.4"
+        "phpunit/phpunit": "~9.5"
     },
     "repositories": [
+        {"type": "composer", "url": "https://asset-packagist.org"},
         {"type": "gitlab", "url": "https://gitlab.com/dicr/yii2-helper.git"},
-        {"type": "github", "url": "https://github.com/simplehtmldom/simplehtmldom.git"},
-        {"type": "composer", "url": "https://asset-packagist.org"}
+        {"type": "github", "url": "https://github.com/simplehtmldom/simplehtmldom.git"}
     ],
     "autoload": {
         "psr-4": {

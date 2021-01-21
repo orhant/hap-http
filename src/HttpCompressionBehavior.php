@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 30.10.20 20:39:30
+ * @version 21.01.21 18:18:41
  */
 
 declare(strict_types = 1);
@@ -71,6 +71,9 @@ class HttpCompressionBehavior extends Behavior
 
                 case 'gzip':
                     $decoded = @gzdecode($response->content);
+                    break;
+
+                default:
                     break;
             }
 

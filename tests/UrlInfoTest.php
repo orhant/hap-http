@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 30.10.20 20:43:13
+ * @version 21.01.21 18:17:05
  */
 
 declare(strict_types = 1);
@@ -113,7 +113,7 @@ class UrlInfoTest extends TestCase
         $urlInfo = new UrlInfo();
         foreach (self::TEST_SUBDOMAIN as [$domain, $parent, $result]) {
             $urlInfo->host = $domain;
-            echo 'Testing: ' . $domain . "\m";
+            echo 'Testing: ' . $domain . "\n";
             self::assertSame($result, $urlInfo->getSubdomain($parent), $domain . '|' . $parent);
         }
     }
