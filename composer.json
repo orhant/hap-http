@@ -16,7 +16,8 @@
     "support": {
         "source": "https://gitlab.com/dicr/yii2-http.git"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "RC",
+    "prefer-stable": true,
     "require": {
         "php": "~7.4",
         "ext-zlib": "*",
