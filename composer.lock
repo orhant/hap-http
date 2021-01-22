@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1584bf48a3bdffd7ca108e6c1a65692d",
+    "content-hash": "000f34ee49ef6035be13c22222f659a5",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -32,7 +32,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -147,22 +147,22 @@
         },
         {
             "name": "dicr/yii2-helper",
-            "version": "4.0.13.1",
+            "version": "4.0.14",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/dicr/yii2-helper.git",
-                "reference": "5dc7e5f11b1f6abc0c6ec6204b782cd234483f44"
+                "reference": "f75c02925344b08e4709c1dc90cc35cd0d743911"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/dicr%2Fyii2-helper/repository/archive.zip?sha=5dc7e5f11b1f6abc0c6ec6204b782cd234483f44",
-                "reference": "5dc7e5f11b1f6abc0c6ec6204b782cd234483f44",
+                "url": "https://gitlab.com/api/v4/projects/dicr%2Fyii2-helper/repository/archive.zip?sha=f75c02925344b08e4709c1dc90cc35cd0d743911",
+                "reference": "f75c02925344b08e4709c1dc90cc35cd0d743911",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
                 "ext-mbstring": "*",
-                "php": "~7.3",
+                "php": "~7.4 || ~8.0.1",
                 "yiisoft/yii2": "~2.0",
                 "yiisoft/yii2-bootstrap4": "~2.0"
             },
@@ -205,7 +205,7 @@
             "support": {
                 "source": "https://gitlab.com/dicr/yii2-helper.git"
             },
-            "time": "2021-01-05T19:27:36+05:00"
+            "time": "2021-01-22T16:19:53+05:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -263,10 +263,10 @@
         },
         {
             "name": "npm-asset/bootstrap",
-            "version": "4.5.3",
+            "version": "4.6.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.5.3.tgz"
+                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-4.6.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -3138,15 +3138,15 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "RC",
     "stability-flags": {
         "simplehtmldom/simplehtmldom": 5,
         "roave/security-advisories": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "~7.4",
+        "php": "~7.4 || ~8.0.1",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
