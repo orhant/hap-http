@@ -1,14 +1,16 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 19.08.20 23:19:44
+ * @version 19.03.21 06:08:04
  */
 
 declare(strict_types = 1);
 
 namespace dicr\http;
+
+use function array_rand;
 
 /**
  * User-Agent.
@@ -123,4 +125,21 @@ class UserAgent
         'vkShare' => 'Mozilla/5.0 (compatible; vkShare; +http://vk.com/dev/Share)',
         'WhatsApp' => 'WhatsApp/2.20.11 i',
     ];
+
+    /**
+     * Возвращает случайную строку.
+     *
+     * @param string[] $list список выбора или пустой для выбора всех списков
+     * @return string
+     */
+    public static function random(array $list = []): string
+    {
+        if (empty($list)) {
+            $list = array_merge(self::BOTS, self::BROWSERS, self::OTHERS);
+        }
+
+        $idx = (string)array_rand($list);
+
+        return (string)$list[$idx];
+    }
 }

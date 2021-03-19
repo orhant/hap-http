@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 21.01.21 18:17:05
+ * @version 19.03.21 06:24:20
  */
 
 declare(strict_types = 1);
@@ -34,8 +34,9 @@ class UrlInfoTest extends TestCase
      * Test UrlInfo::normalizeHost
      *
      * @noinspection PhpMethodMayBeStaticInspection
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testNormalizeHost() : void
+    public function testNormalizeHost(): void
     {
         foreach (self::TEST_NORMALIZE_HOST as $dom => $res) {
             self::assertSame($res, Url::normalizeHost($dom));
@@ -63,8 +64,9 @@ class UrlInfoTest extends TestCase
      * Test UrlInfo::normalizePath
      *
      * @noinspection PhpMethodMayBeStaticInspection
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testNormalizePath() : void
+    public function testNormalizePath(): void
     {
         foreach (self::TEST_NORMALIZE_PATH as $path => $res) {
             self::assertSame($res, Url::normalizePath($path));
@@ -89,8 +91,9 @@ class UrlInfoTest extends TestCase
      * Test UrlInfo::normalizeQuery
      *
      * @noinspection PhpMethodMayBeStaticInspection
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testNormalizeQuery() : void
+    public function testNormalizeQuery(): void
     {
         foreach (self::TEST_NORMALIZE_QUERY as $src => $res) {
             self::assertEquals($res, Url::normalizeQuery($src), 'src: ' . $src);
@@ -107,13 +110,14 @@ class UrlInfoTest extends TestCase
 
     /**
      * Тест определения поддомена
+     *
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testSubdomain() : void
+    public function testSubdomain(): void
     {
         $urlInfo = new UrlInfo();
         foreach (self::TEST_SUBDOMAIN as [$domain, $parent, $result]) {
             $urlInfo->host = $domain;
-            echo 'Testing: ' . $domain . "\n";
             self::assertSame($result, $urlInfo->getSubdomain($parent), $domain . '|' . $parent);
         }
     }
@@ -148,8 +152,10 @@ class UrlInfoTest extends TestCase
 
     /**
      * Тестирование функции sameSite
+     *
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testSameSite() : void
+    public function testSameSite(): void
     {
         /*
         $u1 = new UrlInfo('https://site.ru');
@@ -249,7 +255,6 @@ class UrlInfoTest extends TestCase
             '..' => 'http://сайт.рф',
         ],
 
-        /*
         // полный basePath с файлом в пути
         'http://site.ru/path/to.php?prod=1#link' => [
             '' => 'http://site.ru/path/to.php?prod=1#link',        // пустая
@@ -294,20 +299,15 @@ class UrlInfoTest extends TestCase
             'grad-snab.ru' => 'https://grad-snab.ru/grad-snab.ru',
             '//grad-snab.ru' => 'https://grad-snab.ru'
         ]
-        */
     ];
 
     /**
      * Test UrlInfo::toAbsolute
+     *
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testAbsolute() : void
+    public function testAbsolute(): void
     {
-        /*
-        $u1 = new UrlInfo('http://site.ru/path/to.php?prod=1#link');
-        $u2 = new UrlInfo('//site2.ru?a=b');
-        //var_dump($u2->toAbsolute($u1)->toString()); exit;
-        */
-
         foreach (self::TEST_ABSOLUTE as $base => $tests) {
             $baseUrl = new UrlInfo($base);
             foreach ($tests as $src => $res) {
@@ -331,9 +331,10 @@ class UrlInfoTest extends TestCase
     /**
      * Тестирует ссылки с не http-протоколом
      *
+     * @noinspection PhpUnitMissingTargetForTestInspection
      * @noinspection PhpMethodMayBeStaticInspection
      */
-    public function testNonHttp() : void
+    public function testNonHttp(): void
     {
         foreach (self::TEST_NONHTTP as $src => $dst) {
             $url = UrlInfo::fromString($src);

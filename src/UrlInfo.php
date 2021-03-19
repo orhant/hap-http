@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 21.01.21 18:18:07
+ * @version 19.03.21 06:24:00
  */
 
 declare(strict_types = 1);
@@ -112,7 +112,7 @@ class UrlInfo extends Model
      * {@inheritDoc}
      * @throws InvalidConfigException
      */
-    public function init() : void
+    public function init(): void
     {
         parent::init();
 
@@ -145,7 +145,7 @@ class UrlInfo extends Model
     /**
      * @inheritDoc
      */
-    public function attributes() : array
+    public function attributes(): array
     {
         return ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'];
     }
@@ -154,7 +154,7 @@ class UrlInfo extends Model
      * @inheritDoc
      * (для Arrayable)
      */
-    public function extraFields() : array
+    public function extraFields(): array
     {
         return ['hostInfo', 'requestUri', 'isAbsolute'];
     }
@@ -165,7 +165,7 @@ class UrlInfo extends Model
      * @param string $url адрес URL
      * @return ?static
      */
-    public static function fromString(string $url) : ?self
+    public static function fromString(string $url): ?self
     {
         $self = null;
 
@@ -184,7 +184,7 @@ class UrlInfo extends Model
      * @param int $port
      * @return ?string
      */
-    public static function schemeByPort(int $port) : ?string
+    public static function schemeByPort(int $port): ?string
     {
         foreach (self::SERVICES as $scheme => $p) {
             if ($p === $port) {
@@ -201,7 +201,7 @@ class UrlInfo extends Model
      * @param string $scheme
      * @return ?int
      */
-    public static function portByScheme(string $scheme) : ?int
+    public static function portByScheme(string $scheme): ?int
     {
         foreach (self::SERVICES as $sch => $port) {
             if ($sch === $scheme) {
@@ -217,7 +217,7 @@ class UrlInfo extends Model
      *
      * @return ?string
      */
-    public function getScheme() : ?string
+    public function getScheme(): ?string
     {
         return $this->_scheme ?? ($this->_port === null ? null : static::schemeByPort($this->_port));
     }
@@ -228,7 +228,7 @@ class UrlInfo extends Model
      * @param ?string $scheme
      * @return $this
      */
-    public function setScheme(?string $scheme) : self
+    public function setScheme(?string $scheme): self
     {
         $scheme = (string)$scheme;
         $this->_scheme = $scheme === '' ? null : strtolower($scheme);
@@ -241,7 +241,7 @@ class UrlInfo extends Model
      *
      * @return ?string
      */
-    public function getUser() : ?string
+    public function getUser(): ?string
     {
         return $this->_user;
     }
@@ -252,7 +252,7 @@ class UrlInfo extends Model
      * @param ?string $user
      * @return $this
      */
-    public function setUser(?string $user) : self
+    public function setUser(?string $user): self
     {
         $user = (string)$user;
         $this->_user = $user === '' ? null : $user;
@@ -265,7 +265,7 @@ class UrlInfo extends Model
      *
      * @return ?string
      */
-    public function getPass() : ?string
+    public function getPass(): ?string
     {
         return $this->_pass;
     }
@@ -276,7 +276,7 @@ class UrlInfo extends Model
      * @param ?string $pass
      * @return $this
      */
-    public function setPass(?string $pass) : self
+    public function setPass(?string $pass): self
     {
         $pass = (string)$pass;
         $this->_pass = $pass === '' ? null : $pass;
@@ -290,7 +290,7 @@ class UrlInfo extends Model
      * @param bool $toAscii преобразовать из UTF-8 в ASCII IDN
      * @return ?string хост
      */
-    public function getHost(bool $toAscii = false) : ?string
+    public function getHost(bool $toAscii = false): ?string
     {
         return $this->_host !== null && $toAscii ? Url::idnToAscii($this->_host) : $this->_host;
     }
@@ -301,7 +301,7 @@ class UrlInfo extends Model
      * @param ?string $host
      * @return $this
      */
-    public function setHost(?string $host) : self
+    public function setHost(?string $host): self
     {
         $host = (string)$host;
         $this->_host = $host !== '' ? Url::normalizeHost($host) : null;
@@ -314,7 +314,7 @@ class UrlInfo extends Model
      *
      * @return ?int порт
      */
-    public function getPort() : ?int
+    public function getPort(): ?int
     {
         return $this->_port ?? ($this->_scheme === null ? null : static::portByScheme($this->_scheme));
     }
@@ -325,7 +325,7 @@ class UrlInfo extends Model
      * @param ?int $port
      * @return $this
      */
-    public function setPort(?int $port) : self
+    public function setPort(?int $port): self
     {
         if ($port !== null && ($port < 0 || $port > 65535)) {
             throw new InvalidArgumentException('port');
@@ -341,7 +341,7 @@ class UrlInfo extends Model
      *
      * @return ?string
      */
-    public function getPath() : ?string
+    public function getPath(): ?string
     {
         // если задан хост, то нормализуем путь
         if ($this->_host !== null) {
@@ -357,7 +357,7 @@ class UrlInfo extends Model
      * @param ?string $path
      * @return $this
      */
-    public function setPath(?string $path) : self
+    public function setPath(?string $path): self
     {
         $path = Url::normalizePath((string)$path);
         $this->_path = $path === '' ? null : $path;
@@ -386,7 +386,7 @@ class UrlInfo extends Model
      * @param array|string|null $query
      * @return $this
      */
-    public function setQuery($query) : self
+    public function setQuery($query): self
     {
         $this->_query = $query === null ? null : (Url::normalizeQuery($query) ?: null);
 
@@ -398,7 +398,7 @@ class UrlInfo extends Model
      *
      * @return ?string фрагмент
      */
-    public function getFragment() : ?string
+    public function getFragment(): ?string
     {
         return $this->_fragment;
     }
@@ -409,7 +409,7 @@ class UrlInfo extends Model
      * @param ?string $fragment
      * @return $this
      */
-    public function setFragment(?string $fragment) : self
+    public function setFragment(?string $fragment): self
     {
         $fragment = ltrim((string)$fragment, '#');
         $this->_fragment = $fragment === '' ? null : $fragment;
@@ -423,7 +423,7 @@ class UrlInfo extends Model
      * @param bool $toAscii преобразовать домен из UTF-8 в ASCII
      * @return ?string
      */
-    public function getHostInfo(bool $toAscii = false) : ?string
+    public function getHostInfo(bool $toAscii = false): ?string
     {
         $hostInfo = '';
 
@@ -454,7 +454,7 @@ class UrlInfo extends Model
      * @param bool $toAscii
      * @return string|null
      */
-    public function getBaseUrl(bool $toAscii = false) : ?string
+    public function getBaseUrl(bool $toAscii = false): ?string
     {
         $parts = [];
 
@@ -477,7 +477,7 @@ class UrlInfo extends Model
      * @param bool $fragment добавить #fragment
      * @return string путь?параметры#фрагмент
      */
-    public function getRequestUri(bool $fragment = true) : ?string
+    public function getRequestUri(bool $fragment = true): ?string
     {
         $uri = '';
         if ($this->_path !== null) {
@@ -503,7 +503,7 @@ class UrlInfo extends Model
      * @param bool $toAscii преобразовать домен из UTF в ASCII IDN
      * @return string полный url
      */
-    public function toString(bool $toAscii = false) : string
+    public function toString(bool $toAscii = false): string
     {
         $url = '';
 
@@ -536,7 +536,7 @@ class UrlInfo extends Model
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         try {
             return $this->toString();
@@ -552,7 +552,7 @@ class UrlInfo extends Model
      *
      * @return bool
      */
-    public function getIsAbsolute() : bool
+    public function getIsAbsolute(): bool
     {
         return $this->_scheme !== null;
     }
@@ -563,7 +563,7 @@ class UrlInfo extends Model
      * @param static $base базовый абсолютный URL
      * @return static полный URL
      */
-    public function toAbsolute(self $base) : self
+    public function toAbsolute(self $base): self
     {
         if ($this->isAbsolute) {
             return clone $this;
@@ -606,6 +606,7 @@ class UrlInfo extends Model
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'path':
                 $thisPath = (string)$this->path;
+
                 if ($thisPath !== '') {
                     $basePath = $base->path ?? '/';
 
@@ -625,7 +626,7 @@ class UrlInfo extends Model
                         // добавляем относительный путь
                         $path[] = $thisPath;
 
-                        $full->path = '/' . ltrim(Url::normalizePath(implode('/', $path)), '/');
+                        $full->path = '/' . ltrim(implode('/', $path), '/');
                     }
                 }
 
@@ -641,6 +642,8 @@ class UrlInfo extends Model
                 break;
         }
 
+        $full->path = Url::normalizePath($full->path);
+
         return $full;
     }
 
@@ -655,7 +658,7 @@ class UrlInfo extends Model
      * @return ?string string - имя поддомена,
      *         null - если $domain не является поддоменом родительского
      */
-    public function getSubdomain(string $parent) : ?string
+    public function getSubdomain(string $parent): ?string
     {
         if ($parent === '') {
             return null;
@@ -674,7 +677,7 @@ class UrlInfo extends Model
      * @param string $parent родительский домен
      * @return bool true если $domain != $parent и является поддоменом $parent
      */
-    public function isSubdomain(string $parent) : bool
+    public function isSubdomain(string $parent): bool
     {
         if ($this->_host === null) {
             return false;
@@ -689,7 +692,7 @@ class UrlInfo extends Model
      * @param string $domain сравниваемый домен
      * @return bool true, если $domain1 == $domain2 или один из них является поддоменом другого
      */
-    public function isDomainRelated(string $domain) : bool
+    public function isDomainRelated(string $domain): bool
     {
         if ($this->_host === null) {
             return false;
@@ -710,7 +713,7 @@ class UrlInfo extends Model
      *        - subpath - считать только ссылки в заданном пути (на уровень ниже) = false
      * @return bool true если тот же сайт
      */
-    public function isSameSite(self $other, array $options = []) : bool
+    public function isSameSite(self $other, array $options = []): bool
     {
         $subdoms = ! empty($options['subdoms']); // разрешать поддомены
         $subpath = ! empty($options['subpath']); // разрешать только подкаталоги в пути
@@ -755,7 +758,7 @@ class UrlInfo extends Model
      * @throws LogicException url не абсолютный
      * @link https://yandex.ru/support/webmaster/controlling-robot/robots-txt.html
      */
-    public function matchRobotsMask(string $mask) : bool
+    public function matchRobotsMask(string $mask): bool
     {
         if ($mask === '') {
             return false;

@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license proprietary
- * @version 30.10.20 20:41:00
+ * @version 19.03.21 06:11:04
  */
 
 declare(strict_types = 1);
@@ -24,6 +24,7 @@ class RequestDelayBehaviorTest extends TestCase
      * Проверка паузы запроса.
      *
      * @throws Exception
+     * @noinspection PhpUnitMissingTargetForTestInspection
      */
     public function testDelay() : void
     {
