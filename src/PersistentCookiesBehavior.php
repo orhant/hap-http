@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 30.10.20 20:40:27
+ * @license MIT
+ * @version 19.04.21 17:02:13
  */
 
 declare(strict_types = 1);
@@ -36,7 +36,7 @@ class PersistentCookiesBehavior extends Behavior
      * @inheritDoc
      * @throws InvalidConfigException
      */
-    public function init() : void
+    public function init(): void
     {
         parent::init();
 
@@ -53,7 +53,7 @@ class PersistentCookiesBehavior extends Behavior
     /**
      * {@inheritdoc}
      */
-    public function events() : array
+    public function events(): array
     {
         return [
             Client::EVENT_BEFORE_SEND => '_beforeSend',
@@ -67,7 +67,7 @@ class PersistentCookiesBehavior extends Behavior
      * @param string $domain
      * @return array
      */
-    public static function cacheKey(string $domain) : array
+    public static function cacheKey(string $domain): array
     {
         return [__CLASS__, $domain];
     }
@@ -92,7 +92,7 @@ class PersistentCookiesBehavior extends Behavior
      * @param CookieCollection $cookies ассоциативный массив name => Cookie
      * @return $this
      */
-    public function saveCookies(string $domain, CookieCollection $cookies) : PersistentCookiesBehavior
+    public function saveCookies(string $domain, CookieCollection $cookies): PersistentCookiesBehavior
     {
         $key = static::cacheKey($domain);
 

@@ -2,8 +2,8 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 19.03.21 06:11:04
+ * @license MIT
+ * @version 19.04.21 17:02:14
  */
 
 declare(strict_types = 1);
@@ -27,7 +27,7 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Тест определения домена из запроса.
      */
-    public function testDomain() : void
+    public function testDomain(): void
     {
         $client = new Client();
         $request = $client->get('https://www.google.com');
@@ -37,7 +37,7 @@ class PersistentCookiesBehaviorTest extends TestCase
     /**
      * Тест загрузки/сохранения куков.
      */
-    public function testLoadCookies() : void
+    public function testLoadCookies(): void
     {
         $testData = new CookieCollection([
             'name1' => new Cookie(['name' => 'name1', 'value' => 'value1']),
@@ -64,7 +64,7 @@ class PersistentCookiesBehaviorTest extends TestCase
      * @throws Exception
      * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $client = new Client([
             'as cookies' => [

@@ -2,8 +2,8 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 19.03.21 06:24:00
+ * @license MIT
+ * @version 19.04.21 16:55:28
  */
 
 declare(strict_types = 1);
@@ -660,15 +660,8 @@ class UrlInfo extends Model
      */
     public function getSubdomain(string $parent): ?string
     {
-        if ($parent === '') {
-            return null;
-        }
-
-        if ($this->_host === null) {
-            return null;
-        }
-
-        return Url::getSubdomain($this->_host, $parent);
+        return $parent === '' || $this->_host === null ? null :
+            Url::getSubdomain($this->_host, $parent);
     }
 
     /**
@@ -733,12 +726,8 @@ class UrlInfo extends Model
 
         // сравниваем hostInfo
         if ($u1->_host !== null && $u2->_host !== null) {
-            // сравниваем user, pass, port
-            if ($u1->_user !== $u2->_user || $u1->_pass !== $u2->_pass || $u1->_port !== $u2->_port) {
-                return false;
-            }
-
-            if ((! $subdoms && $u1->_host !== $u2->_host) || ($subdoms && ! $u1->isDomainRelated($u2->_host))) {
+            if ($u1->_user !== $u2->_user || $u1->_pass !== $u2->_pass || $u1->_port !== $u2->_port ||
+                (! $subdoms && $u1->_host !== $u2->_host) || ($subdoms && ! $u1->isDomainRelated($u2->_host))) {
                 return false;
             }
         }

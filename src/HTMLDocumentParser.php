@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 30.10.20 20:43:13
+ * @license MIT
+ * @version 19.04.21 17:02:14
  */
 
 declare(strict_types = 1);
@@ -52,8 +52,8 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
      */
     public function parseContent(string $content): HtmlDocument
     {
-        return new HtmlDocument($content, (bool)$this->lowerTags,
-            (bool)$this->forceTagsClosed, 'UTF-8', $this->removeWhitespace,
+        return new HtmlDocument($content, $this->lowerTags,
+            $this->forceTagsClosed, 'UTF-8', $this->removeWhitespace,
             $this->brText, $this->spanText, $this->options
         );
     }
@@ -61,8 +61,8 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(Response $response) : HtmlDocument
+    public function parse(Response $response): HtmlDocument
     {
-        return $this->parseContent((string)$response->content);
+        return $this->parseContent($response->content);
     }
 }

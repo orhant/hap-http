@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 30.10.20 20:34:19
+ * @license MIT
+ * @version 19.04.21 16:53:30
  */
 
 declare(strict_types = 1);
@@ -20,7 +20,10 @@ use yii\httpclient\Exception;
 use yii\httpclient\Request;
 use yii\httpclient\Response;
 
+use function in_array;
+use function is_array;
 use function is_int;
+use function strtoupper;
 
 /**
  * Client with response caching.
@@ -32,31 +35,36 @@ class CachingClient extends Client
     /** @var CacheInterface */
     public $cache = 'cache';
 
+    /** @var int cache time, s */
+    public $cacheDuration;
+
     /**
      * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
      * Use this only when response depends on cookies.
      */
     public $cacheCookies = false;
 
-    /** @var int cache time, s */
-    public $cacheDuration;
+    /** @var string[] методы запроса для кэширования */
+    public $cacheMethods = ['GET'];
 
     /**
      * @inheritDoc
      * @throws InvalidConfigException
      */
-    public function init() : void
+    public function init(): void
     {
         parent::init();
 
-        if (! empty($this->cache)) {
-            $this->cache = Instance::ensure($this->cache, CacheInterface::class);
-        }
+        $this->cache = Instance::ensure($this->cache, CacheInterface::class);
 
         if (empty($this->cacheDuration)) {
             $this->cacheDuration = null;
         } elseif (! is_int($this->cacheDuration) || $this->cacheDuration < 0) {
             throw new InvalidConfigException('cacheDuration');
+        }
+
+        if (! is_array($this->cacheMethods)) {
+            throw new InvalidConfigException('cacheMethods');
         }
 
         // настраиваем дополнительные парсеры
@@ -72,9 +80,14 @@ class CachingClient extends Client
      * @param Request $request
      * @return string[]
      */
-    protected function cacheKey(Request $request) : array
+    protected function cacheKey(Request $request): array
     {
-        $keyRequest = $this->cacheCookies ? $request : (clone $request)->setCookies([]);
+        $keyRequest = clone $request;
+
+        // очищаем куки
+        if (! $this->cacheCookies) {
+            $keyRequest->setCookies([]);
+        }
 
         return [__METHOD__, $keyRequest->toString()];
     }
@@ -83,39 +96,43 @@ class CachingClient extends Client
      * @inheritDoc
      * @throws Exception
      */
-    public function send($request) : Response
+    public function send($request): Response
     {
-        /** @var string[]|null $cacheKey key for cache */
-        $cacheKey = null;
+        /** @var ?array $cacheKey ключ кэша если кэширование запроса разрешено */
+        $cacheKey = in_array(strtoupper($request->method), $this->cacheMethods, true) ?
+            $this->cacheKey($request) : null;
 
-        // load from cache
-        if (! empty($this->cache)) {
-            $cacheKey = $this->cacheKey($request);
+        /** @var Response|false $response */
+        $response = $cacheKey ? $this->cache->get($cacheKey) : false;
 
-            // load response
-            $response = $this->cache->get($cacheKey);
-            if ($response instanceof Response) {
-                Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
+        // запрос имеется в кэше
+        if ($response instanceof Response) {
+            Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
 
-                // restore client link
-                $response->client = $request->client;
+            // восстанавливаем связь с клиентом
+            $response->client = $request->client;
 
-                return $response;
-            }
+            return $response;
         }
 
-        // fetch from server
+        // отправляем запрос на сервер
         $response = parent::send($request);
 
         // store in cache
-        if ($response->isOk && ! empty($this->cache)) {
-            $cacheResponse = $this->cacheCookies ? $response : (clone $response)->setCookies([]);
+        if ($cacheKey && $response->isOk) {
+            // клонируем объект для подготовки к кэшу
+            $cachingResponse = clone $response;
 
             // clean connection to client to not save it in cache
-            $cacheResponse->client = null;
+            $cachingResponse->client = null;
+
+            // удаляем куки
+            if (! $this->cacheCookies) {
+                $cachingResponse->setCookies([]);
+            }
 
             // save response
-            $this->cache->set($cacheKey, $cacheResponse, $this->cacheDuration, new TagDependency([
+            $this->cache->set($cacheKey, $cachingResponse, $this->cacheDuration, new TagDependency([
                 'tags' => [__CLASS__]
             ]));
         }
@@ -126,7 +143,7 @@ class CachingClient extends Client
     /**
      * Invalidate http-response cache.
      */
-    public function invalidateCache() : void
+    public function invalidateCache(): void
     {
         if (! empty($this->cache)) {
             TagDependency::invalidate($this->cache, [__CLASS__]);

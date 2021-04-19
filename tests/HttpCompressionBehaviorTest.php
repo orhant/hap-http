@@ -2,8 +2,8 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 19.03.21 06:11:04
+ * @license MIT
+ * @version 19.04.21 17:02:14
  */
 
 declare(strict_types = 1);
@@ -26,7 +26,7 @@ class HttpCompressionBehaviorTest extends TestCase
      * @throws Exception
      * @noinspection PhpUnitMissingTargetForTestInspection
      */
-    public function testCompression() : void
+    public function testCompression(): void
     {
         $client = new Client([
             'as compression' => [

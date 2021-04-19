@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 30.10.20 20:44:35
+ * @license MIT
+ * @version 19.04.21 17:02:13
  */
 
 declare(strict_types = 1);
@@ -39,7 +39,7 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      * @return DOMDocument
      * @throws Exception
      */
-    public function parseContent(string $content, ?string $charset = null) : DOMDocument
+    public function parseContent(string $content, ?string $charset = null): DOMDocument
     {
         if ($charset === null) {
             $charset = 'UTF-8';
@@ -83,12 +83,12 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      * @inheritdoc
      * @throws Exception
      */
-    public function parse(Response $response) : DOMDocument
+    public function parse(Response $response): DOMDocument
     {
         // получаем кодировку ответа
         $contentType = $response->getHeaders()->get('content-type', '');
         $charset = preg_match('~charset=(.+)~i', $contentType, $matches) ? $matches[1] : 'UTF-8';
 
-        return $this->parseContent((string)$response->content, $charset);
+        return $this->parseContent($response->content, $charset);
     }
 }

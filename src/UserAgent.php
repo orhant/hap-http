@@ -2,8 +2,8 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 19.03.21 06:08:04
+ * @license MIT
+ * @version 19.04.21 16:57:59
  */
 
 declare(strict_types = 1);
@@ -138,8 +138,6 @@ class UserAgent
             $list = array_merge(self::BOTS, self::BROWSERS, self::OTHERS);
         }
 
-        $idx = (string)array_rand($list);
-
-        return (string)$list[$idx];
+        return $list[(string)array_rand($list)];
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2020 Dicr http://dicr.org
+ * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 30.10.20 20:40:53
+ * @license MIT
+ * @version 19.04.21 17:02:13
  */
 
 declare(strict_types = 1);
@@ -14,6 +14,8 @@ use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\httpclient\Client;
+
+use function is_numeric;
 
 /**
  * Задержка запросов для yii\httpclient\Client
@@ -30,17 +32,15 @@ class RequestDelayBehavior extends Behavior
      * @inheritDoc
      * @throws InvalidConfigException
      */
-    public function init() : void
+    public function init(): void
     {
         parent::init();
 
-        $this->delayMin = (float)$this->delayMin;
-        if ($this->delayMin < 0) {
+        if (! is_numeric($this->delayMin) || $this->delayMin < 0) {
             throw new InvalidConfigException('delayMin');
         }
 
-        $this->delayMax = (float)$this->delayMax;
-        if ($this->delayMax < 0) {
+        if (! is_numeric($this->delayMax) || $this->delayMax < 0) {
             throw new InvalidConfigException('delayMax');
         }
 
@@ -52,7 +52,7 @@ class RequestDelayBehavior extends Behavior
     /**
      * @inheritdoc
      */
-    public function events() : array
+    public function events(): array
     {
         return [
             Client::EVENT_BEFORE_SEND => '_beforeSend',
