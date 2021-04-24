@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 19.04.21 16:53:30
+ * @version 25.04.21 00:57:01
  */
 
 declare(strict_types = 1);
@@ -66,6 +66,8 @@ class CachingClient extends Client
         if (! is_array($this->cacheMethods)) {
             throw new InvalidConfigException('cacheMethods');
         }
+
+        $this->cacheMethods = array_map('\strtoupper', $this->cacheMethods);
 
         // настраиваем дополнительные парсеры
         $this->parsers = array_merge([
