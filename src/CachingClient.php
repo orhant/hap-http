@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 25.04.21 00:57:01
+ * @version 26.04.21 21:17:18
  */
 
 declare(strict_types = 1);
@@ -23,17 +23,30 @@ use yii\httpclient\Response;
 use function in_array;
 use function is_array;
 use function is_int;
+use function preg_quote;
 use function strtoupper;
 
 /**
- * Client with response caching.
+ * HTTP-клиент с кэшированием ответов.
  *
- * For caching repeatable requests, headers (Cookies, User-Agent, ...) must be similar for next requests
+ * Для управлением кэшем используется заголовок Cache-Control со следующими значениями:
+ * - no-cache - не кэшировать данный запрос
+ * - max-age=seconds - установить время кэширования, секунд
+ * При данных значениях заголовок Cache-Control удаляется из запроса.
  */
 class CachingClient extends Client
 {
     /** @var CacheInterface */
     public $cache = 'cache';
+
+    /** @var string */
+    public const CACHE_CONTROL = 'Cache-Control';
+
+    /** @var string не кэшировать запрос */
+    public const CACHE_NO_CACHE = 'no-cache';
+
+    /** @var string время кэширования */
+    public const CACHE_MAX_AGE = 'max-age';
 
     /** @var int cache time, s */
     public $cacheDuration;
@@ -95,13 +108,53 @@ class CachingClient extends Client
     }
 
     /**
+     * Возвращает время кэширования запроса, заданное в заголовке Cache-Control.
+     *
+     * @param Request $request
+     * @return ?int
+     */
+    private static function cacheDuration(Request $request): ?int
+    {
+        $vals = $request->headers->get(self::CACHE_CONTROL, null, false);
+        $modified = false;
+        $cacheTime = null;
+        $matches = null;
+
+        foreach ($vals ?: [] as $i => $val) {
+            if ($val === self::CACHE_NO_CACHE) {
+                $cacheTime = 0;
+                unset($vals[$i]);
+                $modified = true;
+            } elseif (preg_match('^' . preg_quote(self::CACHE_MAX_AGE, '~') . '=(\d+)$', $val, $matches)) {
+                $cacheTime = (int)$matches[1];
+                unset($vals[$i]);
+                $modified = true;
+            }
+        }
+
+        // устанавливаем новые значения
+        if ($modified) {
+            $request->headers->remove(self::CACHE_CONTROL);
+
+            foreach ($vals as $val) {
+                $request->headers->add(self::CACHE_CONTROL, $val);
+            }
+        }
+
+        return $cacheTime;
+    }
+
+    /**
      * @inheritDoc
      * @throws Exception
      */
     public function send($request): Response
     {
+        /** @var int $cacheDuration время кэширования */
+        $cacheDuration = self::cacheDuration($request) ?? $this->cacheDuration;
+
         /** @var ?array $cacheKey ключ кэша если кэширование запроса разрешено */
-        $cacheKey = in_array(strtoupper($request->method), $this->cacheMethods, true) ?
+        $cacheKey = $cacheDuration !== 0 && in_array(strtoupper($request->method), $this->cacheMethods, true) ?
             $this->cacheKey($request) : null;
 
         /** @var Response|false $response */
@@ -134,7 +187,7 @@ class CachingClient extends Client
             }
 
             // save response
-            $this->cache->set($cacheKey, $cachingResponse, $this->cacheDuration, new TagDependency([
+            $this->cache->set($cacheKey, $cachingResponse, $cacheDuration, new TagDependency([
                 'tags' => [__CLASS__]
             ]));
         }
