@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 26.04.21 21:24:27
+ * @version 26.04.21 21:34:38
  */
 
 declare(strict_types = 1);
@@ -125,7 +125,7 @@ class CachingClient extends Client
                 $cacheTime = 0;
                 unset($vals[$i]);
                 $modified = true;
-            } elseif (preg_match('^' . preg_quote(self::CACHE_MAX_AGE, '~') . '=(\d+)$', $val, $matches)) {
+            } elseif (preg_match('^' . preg_quote(self::CACHE_MAX_AGE, '~') . '=(\d+)$~ui', $val, $matches)) {
                 $cacheTime = (int)$matches[1];
                 unset($vals[$i]);
                 $modified = true;
