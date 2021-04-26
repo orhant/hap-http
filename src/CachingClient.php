@@ -3,7 +3,7 @@
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license MIT
- * @version 26.04.21 21:17:18
+ * @version 26.04.21 21:24:27
  */
 
 declare(strict_types = 1);
@@ -49,7 +49,7 @@ class CachingClient extends Client
     public const CACHE_MAX_AGE = 'max-age';
 
     /** @var int cache time, s */
-    public $cacheDuration;
+    public $cacheDuration = 86400;
 
     /**
      * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
@@ -71,7 +71,7 @@ class CachingClient extends Client
         $this->cache = Instance::ensure($this->cache, CacheInterface::class);
 
         if (empty($this->cacheDuration)) {
-            $this->cacheDuration = null;
+            $this->cacheDuration = 0;
         } elseif (! is_int($this->cacheDuration) || $this->cacheDuration < 0) {
             throw new InvalidConfigException('cacheDuration');
         }
