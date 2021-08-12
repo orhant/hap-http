@@ -2,8 +2,8 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 17:02:13
+ * @license BSD-3-Clause
+ * @version 12.08.21 22:48:24
  */
 
 declare(strict_types = 1);
@@ -96,7 +96,7 @@ class PersistentCookiesBehavior extends Behavior
     {
         $key = static::cacheKey($domain);
 
-        if ($cookies === null || $cookies->count < 1) {
+        if ($cookies->count < 1) {
             $this->store->delete($key);
         } else {
             $this->store->set($key, $cookies, $this->cacheDuration, new TagDependency([

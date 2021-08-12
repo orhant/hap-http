@@ -2,10 +2,11 @@
 /*
  * @copyright 2019-2021 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 16:57:59
+ * @license BSD-3-Clause
+ * @version 12.08.21 22:50:49
  */
 
+/** @noinspection HttpUrlsUsage */
 declare(strict_types = 1);
 
 namespace dicr\http;
