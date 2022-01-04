@@ -1,11 +1,12 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license proprietary
- * @version 19.03.21 06:24:20
+ * @license BSD-3-Clause
+ * @version 04.01.22 22:26:10
  */
 
+/** @noinspection HttpUrlsUsage */
 declare(strict_types = 1);
 namespace dicr\tests;
 

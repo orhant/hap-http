@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 17:02:13
+ * @license BSD-3-Clause
+ * @version 04.01.22 22:26:10
  */
 
 declare(strict_types = 1);
@@ -15,18 +15,16 @@ use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\httpclient\Client;
 
-use function is_numeric;
-
 /**
  * Задержка запросов для yii\httpclient\Client
  */
 class RequestDelayBehavior extends Behavior
 {
     /** @var float minimum delay value, seconds */
-    public $delayMin = 0.0;
+    public float $delayMin = 0.0;
 
     /** @var float maximum delay value, seconds */
-    public $delayMax = 2.0;
+    public float $delayMax = 2.0;
 
     /**
      * @inheritDoc
@@ -36,11 +34,11 @@ class RequestDelayBehavior extends Behavior
     {
         parent::init();
 
-        if (! is_numeric($this->delayMin) || $this->delayMin < 0) {
+        if ($this->delayMin < 0) {
             throw new InvalidConfigException('delayMin');
         }
 
-        if (! is_numeric($this->delayMax) || $this->delayMax < 0) {
+        if ($this->delayMax < 0) {
             throw new InvalidConfigException('delayMax');
         }
 

@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 17:02:13
+ * @license BSD-3-Clause
+ * @version 04.01.22 21:06:14
  */
 
 declare(strict_types = 1);
@@ -26,11 +26,11 @@ use yii\web\CookieCollection;
  */
 class PersistentCookiesBehavior extends Behavior
 {
-    /** @var CacheInterface кэш куков (ключ привязывается к домену запроса) */
-    public $store = 'cache';
+    /** @var CacheInterface|string кэш куков (ключ привязывается к домену запроса) */
+    public string|CacheInterface $store = 'cache';
 
     /** @var ?int время хранения в кэше */
-    public $cacheDuration;
+    public ?int $cacheDuration = null;
 
     /**
      * @inheritDoc
@@ -89,10 +89,10 @@ class PersistentCookiesBehavior extends Behavior
      * Сохраняет куки для домена. Если значение пустое, то удаляет.
      *
      * @param string $domain
-     * @param CookieCollection $cookies ассоциативный массив name => Cookie
+     * @param CookieCollection|null $cookies ассоциативный массив name => Cookie
      * @return $this
      */
-    public function saveCookies(string $domain, CookieCollection $cookies): PersistentCookiesBehavior
+    public function saveCookies(string $domain, ?CookieCollection $cookies): PersistentCookiesBehavior
     {
         $key = static::cacheKey($domain);
 

@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 26.04.21 21:37:39
+ * @license BSD-3-Clause
+ * @version 04.01.22 22:23:24
  */
 
 declare(strict_types = 1);
@@ -21,8 +21,6 @@ use yii\httpclient\Request;
 use yii\httpclient\Response;
 
 use function in_array;
-use function is_array;
-use function is_int;
 use function preg_quote;
 use function strtoupper;
 
@@ -36,8 +34,7 @@ use function strtoupper;
  */
 class CachingClient extends Client
 {
-    /** @var CacheInterface */
-    public $cache = 'cache';
+    public string|CacheInterface $cache = 'cache';
 
     /** @var string */
     public const CACHE_CONTROL = 'Cache-Control';
@@ -49,16 +46,16 @@ class CachingClient extends Client
     public const CACHE_MAX_AGE = 'max-age';
 
     /** @var int cache time, s */
-    public $cacheDuration = 86400;
+    public int $cacheDuration = 86400;
 
     /**
      * @var bool if true, then cache key calculated with cookies. If false, then browsing is incognito.
      * Use this only when response depends on cookies.
      */
-    public $cacheCookies = false;
+    public bool $cacheCookies = false;
 
     /** @var string[] методы запроса для кэширования */
-    public $cacheMethods = ['GET'];
+    public array $cacheMethods = ['GET'];
 
     /**
      * @inheritDoc
@@ -70,14 +67,8 @@ class CachingClient extends Client
 
         $this->cache = Instance::ensure($this->cache, CacheInterface::class);
 
-        if (empty($this->cacheDuration)) {
-            $this->cacheDuration = 0;
-        } elseif (! is_int($this->cacheDuration) || $this->cacheDuration < 0) {
+        if ($this->cacheDuration < 0) {
             throw new InvalidConfigException('cacheDuration');
-        }
-
-        if (! is_array($this->cacheMethods)) {
-            throw new InvalidConfigException('cacheMethods');
         }
 
         $this->cacheMethods = array_map('\strtoupper', $this->cacheMethods);
@@ -150,7 +141,7 @@ class CachingClient extends Client
      */
     public function send($request): Response
     {
-        /** @var int $cacheDuration время кэширования */
+        // время кэширования
         $cacheDuration = self::cacheDuration($request) ?? $this->cacheDuration;
 
         /** @var ?array $cacheKey ключ кэша если кэширование запроса разрешено */

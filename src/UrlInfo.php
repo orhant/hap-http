@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 16:55:28
+ * @license BSD-3-Clause
+ * @version 04.01.22 22:23:15
  */
 
 declare(strict_types = 1);
@@ -21,7 +21,6 @@ use function gettype;
 use function in_array;
 use function is_array;
 use function is_string;
-use function mb_strpos;
 use function mb_substr;
 
 /**
@@ -62,28 +61,28 @@ class UrlInfo extends Model
     ];
 
     /** @var ?string схема */
-    private $_scheme;
+    private ?string $_scheme = null;
 
     /** @var ?string логин */
-    private $_user;
+    private ?string $_user = null;
 
     /** @var ?string пароль */
-    private $_pass;
+    private ?string $_pass = null;
 
     /** @var ?string сервер (домен в utf8) */
-    private $_host;
+    private ?string $_host = null;
 
     /** @var ?int порт */
-    private $_port;
+    private ?int $_port = null;
 
     /** @var ?string путь */
-    private $_path;
+    private ?string $_path = null;
 
     /** @var ?array параметры key => $val */
-    private $_query;
+    private ?array $_query = null;
 
     /** @var ?string фрагмент */
-    private $_fragment;
+    private ?string $_fragment = null;
 
     /**
      * Конструктор
@@ -91,7 +90,7 @@ class UrlInfo extends Model
      * @param string|array $urlConfig url или конфиг
      * @throws InvalidArgumentException
      */
-    public function __construct($urlConfig = [])
+    public function __construct(string|array $urlConfig = [])
     {
         // конвертируем из строки
         if (is_string($urlConfig)) {
@@ -371,7 +370,7 @@ class UrlInfo extends Model
      * @param bool $toString преобразовать в строку
      * @return array|string|null параметры запроса
      */
-    public function getQuery(bool $toString = false)
+    public function getQuery(bool $toString = false): array|string|null
     {
         if ($this->_query === null) {
             return null;
@@ -386,7 +385,7 @@ class UrlInfo extends Model
      * @param array|string|null $query
      * @return $this
      */
-    public function setQuery($query): self
+    public function setQuery(array|string|null $query): self
     {
         $this->_query = $query === null ? null : (Url::normalizeQuery($query) ?: null);
 
@@ -475,7 +474,7 @@ class UrlInfo extends Model
      * Возвращает строку запроса
      *
      * @param bool $fragment добавить #fragment
-     * @return string путь?параметры#фрагмент
+     * @return string|null путь?параметры#фрагмент
      */
     public function getRequestUri(bool $fragment = true): ?string
     {
@@ -735,7 +734,7 @@ class UrlInfo extends Model
         // проверяем путь
         return ! (
             $subpath && $u1->_path !== null &&
-            ($u2->_path === null || mb_strpos($u2->_path, $u1->_path) !== 0)
+            ($u2->_path === null || ! str_starts_with($u2->_path, $u1->_path))
         );
     }
 

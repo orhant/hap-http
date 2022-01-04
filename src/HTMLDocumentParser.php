@@ -1,9 +1,9 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
+ * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
- * @license MIT
- * @version 19.04.21 17:02:14
+ * @license BSD-3-Clause
+ * @version 04.01.22 22:24:42
  */
 
 declare(strict_types = 1);
@@ -27,22 +27,22 @@ class HTMLDocumentParser extends BaseObject implements ParserInterface
     public const FORMAT = 'html-document';
 
     /** @var bool преобразовывать названия тегов в маленькие буквы */
-    public $lowerTags = true;
+    public bool $lowerTags = true;
 
     /** @var bool принудительное закрытие всех тегов, например <br></br> */
-    public $forceTagsClosed = false;
+    public bool $forceTagsClosed = false;
 
     /** @var bool удалять пробелы и переносы текста между тегами и в тексте */
-    public $removeWhitespace = false;
+    public bool $removeWhitespace = false;
 
-    /** @var string plaintext для <br/> (по-умолчанию \r\n) */
-    public $brText;
+    /** @var string|null plaintext для <br/> (по-умолчанию \r\n) */
+    public ?string $brText = null;
 
-    /** @var string текст для span (по-умолчанию " ") */
-    public $spanText;
+    /** @var string|null текст для span (по-умолчанию " ") */
+    public ?string $spanText = null;
 
-    /** @var int дополнительные опции simplehtmldom */
-    public $options;
+    /** @var int|null дополнительные опции simplehtmldom */
+    public ?int $options = null;
 
     /**
      * Парсит HTML-контент.

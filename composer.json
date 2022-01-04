@@ -10,7 +10,7 @@
         {
             "name": "Igor Tarasov",
             "email": "develop@dicr.org",
-            "homepage": "http://dicr.org",
+            "homepage": "https://dicr.org",
             "role": "developer"
         }
     ],
@@ -23,7 +23,7 @@
     "prefer-stable": true,
 
     "require": {
-        "php": "~7.4 || ~8.0.1",
+        "php": "~8.0",
         "ext-zlib": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
@@ -33,7 +33,7 @@
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
 
-        "dicr/yii2-helper": "~4.5",
+        "dicr/yii2-helper": "~6.0",
 
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
