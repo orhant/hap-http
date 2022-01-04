@@ -3,7 +3,7 @@
  * @copyright 2019-2022 Dicr http://dicr.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license BSD-3-Clause
- * @version 04.01.22 21:06:14
+ * @version 04.01.22 22:29:15
  */
 
 declare(strict_types = 1);
@@ -89,14 +89,14 @@ class PersistentCookiesBehavior extends Behavior
      * Сохраняет куки для домена. Если значение пустое, то удаляет.
      *
      * @param string $domain
-     * @param CookieCollection|null $cookies ассоциативный массив name => Cookie
+     * @param CookieCollection $cookies ассоциативный массив name => Cookie
      * @return $this
      */
-    public function saveCookies(string $domain, ?CookieCollection $cookies): PersistentCookiesBehavior
+    public function saveCookies(string $domain, CookieCollection $cookies): PersistentCookiesBehavior
     {
         $key = static::cacheKey($domain);
 
-        if ($cookies === null || $cookies->count < 1) {
+        if ($cookies->count < 1) {
             $this->store->delete($key);
         } else {
             $this->store->set($key, $cookies, $this->cacheDuration, new TagDependency([
