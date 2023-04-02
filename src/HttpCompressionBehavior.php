@@ -1,13 +1,13 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2021 Dicr http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license MIT
  * @version 19.04.21 17:02:14
  */
 
 declare(strict_types = 1);
-namespace dicr\http;
+namespace hap\http;
 
 use Yii;
 use yii\base\Behavior;
@@ -79,7 +79,7 @@ class HttpCompressionBehavior extends Behavior
 
             if ($decoded !== false) {
                 $response->content = $decoded;
-                Yii::debug('Ответ декодирован из: ' . $encoding, __METHOD__);
+                Yii::debug('Response decoded from: ' . $encoding, __METHOD__);
             }
         }
     }

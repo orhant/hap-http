@@ -1,13 +1,13 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2022 OrhanT http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:23:15
  */
 
 declare(strict_types = 1);
-namespace dicr\http;
+namespace hap\http;
 
 use dicr\helper\Url;
 use InvalidArgumentException;
@@ -44,7 +44,7 @@ use function mb_substr;
  */
 class UrlInfo extends Model
 {
-    /** @var array стандартные сервисы и порты */
+    /** @var array standard services and ports */
     public const SERVICES = [
         'http' => 80,
         'https' => 443,
@@ -53,46 +53,46 @@ class UrlInfo extends Model
         'smb' => 445
     ];
 
-    /** @var array специальные схемы, которым не обязателен хост */
+    /** @var array special schemes that do not require a host */
     public const SCHEME_NONHTTP = [
         'javascript',
         'mailto',
         'tel'
     ];
 
-    /** @var ?string схема */
+    /** @var ?string scheme */
     private ?string $_scheme = null;
 
-    /** @var ?string логин */
+    /** @var ?string user */
     private ?string $_user = null;
 
-    /** @var ?string пароль */
+    /** @var ?string password */
     private ?string $_pass = null;
 
-    /** @var ?string сервер (домен в utf8) */
+    /** @var ?string server (domain in utf8) */
     private ?string $_host = null;
 
-    /** @var ?int порт */
+    /** @var ?int port */
     private ?int $_port = null;
 
-    /** @var ?string путь */
+    /** @var ?string path */
     private ?string $_path = null;
 
-    /** @var ?array параметры key => $val */
+    /** @var ?array query key => $val */
     private ?array $_query = null;
 
-    /** @var ?string фрагмент */
+    /** @var ?string fragment */
     private ?string $_fragment = null;
 
     /**
-     * Конструктор
+     * Constructor
      *
-     * @param string|array $urlConfig url или конфиг
+     * @param string|array $urlConfig url or config
      * @throws InvalidArgumentException
      */
     public function __construct(string|array $urlConfig = [])
     {
-        // конвертируем из строки
+        // convert from string
         if (is_string($urlConfig)) {
             $config = $urlConfig === '' ? [] : parse_url($urlConfig);
             if ($config === false) {
@@ -101,7 +101,7 @@ class UrlInfo extends Model
 
             $urlConfig = (array)$config;
         } elseif (! is_array($urlConfig)) {
-            throw new InvalidArgumentException('неизвестный тип url: ' . gettype($urlConfig));
+            throw new InvalidArgumentException('unknown url type: ' . gettype($urlConfig));
         }
 
         parent::__construct($urlConfig);
@@ -115,28 +115,28 @@ class UrlInfo extends Model
     {
         parent::init();
 
-        // если указана схема, то должен быть указан хост
+        // if schema is specified then host must be specified
         if ($this->_host === null && $this->_scheme !== null && !
             in_array($this->_scheme, self::SCHEME_NONHTTP, true)) {
-            throw new InvalidConfigException('host не указан');
+            throw new InvalidConfigException('host not specified');
         }
 
-        // если указан пароль, то должен быть указан логин
+        // if a password is specified, then a login must be specified
         if ($this->_pass !== null && $this->_user === null) {
-            throw new InvalidConfigException('user не указан');
+            throw new InvalidConfigException('user not specified');
         }
 
-        // если указан логин или порт, то должен быть указан хост
+        // if a login or port is specified, then the host must be specified
         if (($this->_user !== null || $this->_port !== null) && $this->_host === null) {
-            throw new InvalidConfigException('host не указан');
+            throw new InvalidConfigException('host not specified');
         }
 
-        // если указан хост, то путь должен начинаться с /
+        // if a host is specified, then the path must start with /
         if ($this->_host !== null) {
             if ($this->_path === null) {
                 $this->_path = '/';
             } elseif ($this->_path[0] !== '/') {
-                throw new InvalidConfigException('path должен начинаться с "/"');
+                throw new InvalidConfigException('path must start with "/"');
             }
         }
     }
@@ -159,7 +159,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Создает экземпляр из строки
+     * Creates an instance from a string
      *
      * @param string $url адрес URL
      * @return ?static
@@ -178,7 +178,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает схему по номеру порта
+     * Returns schema by port number
      *
      * @param int $port
      * @return ?string
@@ -195,7 +195,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает номер порта по схеме сервиса
+     * Returns the port number according to the service scheme
      *
      * @param string $scheme
      * @return ?int
@@ -212,7 +212,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает схему
+     * Returns schema
      *
      * @return ?string
      */
@@ -222,7 +222,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает схему
+     * Sets the scheme
      *
      * @param ?string $scheme
      * @return $this
@@ -236,7 +236,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает логин
+     * Returns login
      *
      * @return ?string
      */
@@ -246,7 +246,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает пользователя
+     * Sets the user
      *
      * @param ?string $user
      * @return $this
@@ -260,7 +260,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает пароль
+     * Returns the password
      *
      * @return ?string
      */
@@ -270,7 +270,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает пароль
+     * Sets a password
      *
      * @param ?string $pass
      * @return $this
@@ -284,10 +284,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает хост
+     * Returns the host
      *
-     * @param bool $toAscii преобразовать из UTF-8 в ASCII IDN
-     * @return ?string хост
+     * @param bool $toAscii convert from UTF-8 to ASCII IDN
+     * @return ?string host
      */
     public function getHost(bool $toAscii = false): ?string
     {
@@ -295,7 +295,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает хост
+     * Sets the host
      *
      * @param ?string $host
      * @return $this
@@ -309,9 +309,9 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает порт
+     * Returns the port
      *
-     * @return ?int порт
+     * @return ?int port
      */
     public function getPort(): ?int
     {
@@ -319,7 +319,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает порт
+     * Sets the port
      *
      * @param ?int $port
      * @return $this
@@ -336,13 +336,13 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает путь
+     * Returns the path
      *
      * @return ?string
      */
     public function getPath(): ?string
     {
-        // если задан хост, то нормализуем путь
+        // if a host is given, then normalize the path
         if ($this->_host !== null) {
             return '/' . ltrim((string)$this->_path, '/');
         }
@@ -351,7 +351,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает путь.
+     * Sets the path.
      *
      * @param ?string $path
      * @return $this
@@ -365,10 +365,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает параметры запроса.
+     * Returns query parameters.
      *
-     * @param bool $toString преобразовать в строку
-     * @return array|string|null параметры запроса
+     * @param bool $toString convert to string
+     * @return array|string|null request parameters
      */
     public function getQuery(bool $toString = false): array|string|null
     {
@@ -380,7 +380,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает параметры запроса
+     * Sets request parameters
      *
      * @param array|string|null $query
      * @return $this
@@ -393,9 +393,9 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает фрагмент
+     * Returns a fragment
      *
-     * @return ?string фрагмент
+     * @return ?string fragment
      */
     public function getFragment(): ?string
     {
@@ -403,7 +403,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Устанавливает фрагмент
+     * Sets fragment
      *
      * @param ?string $fragment
      * @return $this
@@ -417,9 +417,9 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает hostInfo: user:pass@host:port часть URL
+     * returns hostInfo: user:pass@host:port часть URL
      *
-     * @param bool $toAscii преобразовать домен из UTF-8 в ASCII
+     * @param bool $toAscii convert domain from UTF-8 в ASCII
      * @return ?string
      */
     public function getHostInfo(bool $toAscii = false): ?string
@@ -448,7 +448,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Базовый URL (scheme :// hostInfo)
+     * Base URL (scheme :// hostInfo)
      *
      * @param bool $toAscii
      * @return string|null
@@ -471,10 +471,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает строку запроса
+     * Returns the query string
      *
      * @param bool $fragment добавить #fragment
-     * @return string|null путь?параметры#фрагмент
+     * @return string|null path?parameters#fragment
      */
     public function getRequestUri(bool $fragment = true): ?string
     {
@@ -483,7 +483,7 @@ class UrlInfo extends Model
             $uri .= $this->_path;
         }
 
-        // добавляем параметры
+        // add parameters
         $query = (string)$this->getQuery(true);
         if ($query !== '') {
             $uri .= '?' . $query;
@@ -497,9 +497,9 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает строковое представление
+     * Returns a string representation
      *
-     * @param bool $toAscii преобразовать домен из UTF в ASCII IDN
+     * @param bool $toAscii пconvert domain from UTF в ASCII IDN
      * @return string полный url
      */
     public function toString(bool $toAscii = false): string
@@ -531,7 +531,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает строковое представление.
+     * Returns a string representation.
      *
      * @return string
      */
@@ -547,7 +547,7 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает признак абсолютной ссылки
+     * Returns the attribute of an absolute reference
      *
      * @return bool
      */
@@ -557,10 +557,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает абсолютный URL по базовому
+     * Returns the absolute URL based on the base URL
      *
-     * @param static $base базовый абсолютный URL
-     * @return static полный URL
+     * @param static $base is the base absolute URL.
+     * @return static full URL
      */
     public function toAbsolute(self $base): self
     {
@@ -569,13 +569,13 @@ class UrlInfo extends Model
         }
 
         if (! $base->isAbsolute) {
-            throw new InvalidArgumentException('base не абсолютный Url');
+            throw new InvalidArgumentException('base not absolute Url');
         }
 
-        // клонируем полную ссылку для перезаписи
+        // clone the full link to rewrite
         $full = clone $base;
 
-        // определяем начало перезаписи
+        // determine the start of rewriting
         $start = null;
         if ($this->_scheme !== null) {
             $start = 'scheme';
@@ -589,7 +589,7 @@ class UrlInfo extends Model
             $start = 'fragment';
         }
 
-        // перезаписываем, начиная с заданного компонента
+        // overwrite starting from the given component
         switch ($start) {
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'scheme':
@@ -610,19 +610,19 @@ class UrlInfo extends Model
                     $basePath = $base->path ?? '/';
 
                     if ($basePath === '/' || $thisPath[0] === '/') {
-                        // если базовый пустой или относительный путь полный, то переписываем весь путь
+                        // if the base is empty or the relative path is full, then rewrite the entire path
                         $full->path = '/' . ltrim($thisPath, '/');
                     } elseif (mb_substr($basePath, -1, 1) === '/') {
-                        // если базовый заканчивается на '/', то добавляем относительный
+                        // if base ends with '/' then add relative
                         $full->_path .= $thisPath;
                     } else {
-                        // удаляем последний компонент из базового
+                        // remove the last component from the base
                         $path = (array)preg_split('~/+~um', $basePath, -1, PREG_SPLIT_NO_EMPTY);
                         if (! empty($path)) {
                             array_pop($path);
                         }
 
-                        // добавляем относительный путь
+                        // add relative path
                         $path[] = $thisPath;
 
                         $full->path = '/' . ltrim(implode('/', $path), '/');
@@ -647,15 +647,15 @@ class UrlInfo extends Model
     }
 
     /**
-     * Возвращает поддомен домена.
-     * Пример:
+     * Returns the subdomain of a domain.
+     * Example:
      * "test.mail.ru", "mail.ru" => "test"
      * "mail.ru", "mail.ru" => ""
      * "test.mail.ru", "yandex.ru" => false
      *
-     * @param string $parent родительский
-     * @return ?string string - имя поддомена,
-     *         null - если $domain не является поддоменом родительского
+     * @param string $parent parent
+     * @return ?string string - subdomain name,
+     *         null - if $domain is not a subdomain of the parent
      */
     public function getSubdomain(string $parent): ?string
     {
@@ -664,10 +664,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Проверяет является ли поддоменом $parent
+     * Checks if it is a subdomain $parent
      *
-     * @param string $parent родительский домен
-     * @return bool true если $domain != $parent и является поддоменом $parent
+     * @param string $parent parent domain
+     * @return bool true if $domain != $parent and is a subdomain of $parent
      */
     public function isSubdomain(string $parent): bool
     {
@@ -679,10 +679,10 @@ class UrlInfo extends Model
     }
 
     /**
-     * Проверяет имеет ли домен взаимоотношение родительский-дочерний с $domain
+     * Checks if the domain has a parent-child relationship with $domain
      *
-     * @param string $domain сравниваемый домен
-     * @return bool true, если $domain1 == $domain2 или один из них является поддоменом другого
+     * @param string $domain comparison domain
+     * @return bool true, if $domain1 == $domain2 or one of them is a subdomain of the other
      */
     public function isDomainRelated(string $domain): bool
     {
@@ -694,27 +694,27 @@ class UrlInfo extends Model
     }
 
     /**
-     * Проверяет является ли сравниваемая ссылка
-     * на том же сайте что и данная.
-     * Ссылка на том же сайте, если она относительная данной или
-     * у нее одинаковые схемы, хосты, либо хост является поддоменом данной.
+     * Checks if the reference being compared is
+     * on the same site as this one.
+     * Link on the same site, if it is relative to this or
+     * it has the same schemes, hosts, or the host is a subdomain of this one.
      *
-     * @param static $other базовый url
-     * @param array $options опции тестирования
-     *        - subdoms - считать поддомены тем же сайтом = false
-     *        - subpath - считать только ссылки в заданном пути (на уровень ниже) = false
-     * @return bool true если тот же сайт
+     * @param static $other base url
+     * @param array $options test options
+     *        - subdoms - consider subdomains as the same site= false
+     *        - subpath - count only links in the given path (one level down) = false
+     * @return bool true if the same site
      */
     public function isSameSite(self $other, array $options = []): bool
     {
-        $subdoms = ! empty($options['subdoms']); // разрешать поддомены
-        $subpath = ! empty($options['subpath']); // разрешать только подкаталоги в пути
+        $subdoms = ! empty($options['subdoms']); // allow subdomains
+        $subpath = ! empty($options['subpath']); // allow only subdirectories in the path
 
-        // достраиваем ссылки друг по другу
+        // linking links to each other
         $u1 = $this;
         $u2 = $other;
 
-        // сравниваем схемы
+        // compare schemes
         if ($u1->_scheme !== $u2->_scheme && (
                 ($u1->_scheme !== null && $u2->_scheme !== null) ||
                 ($u1->_scheme !== null && in_array($u1->_scheme, self::SCHEME_NONHTTP, true)) ||
@@ -723,7 +723,7 @@ class UrlInfo extends Model
             return false;
         }
 
-        // сравниваем hostInfo
+        // compare hostInfo
         if ($u1->_host !== null && $u2->_host !== null) {
             if ($u1->_user !== $u2->_user || $u1->_pass !== $u2->_pass || $u1->_port !== $u2->_port ||
                 (! $subdoms && $u1->_host !== $u2->_host) || ($subdoms && ! $u1->isDomainRelated($u2->_host))) {
@@ -731,7 +731,7 @@ class UrlInfo extends Model
             }
         }
 
-        // проверяем путь
+        // checking the path
         return ! (
             $subpath && $u1->_path !== null &&
             ($u2->_path === null || ! str_starts_with($u2->_path, $u1->_path))
@@ -739,11 +739,11 @@ class UrlInfo extends Model
     }
 
     /**
-     * Проверяет совпадение маски правила robots.txt с данным URL
+     * Checks if the mask of the robots.txt rule matches the given URL
      *
-     * @param string $mask маска может содержать специальные символы '*' и '$' как в robots.txt
-     * @return bool true если совпадает
-     * @throws LogicException url не абсолютный
+     * @param string $mask mask can contain special characters '*' and '$' as in robots.txt
+     * @return bool true if it matches
+     * @throws LogicException url not absolute
      * @link https://yandex.ru/support/webmaster/controlling-robot/robots-txt.html
      */
     public function matchRobotsMask(string $mask): bool

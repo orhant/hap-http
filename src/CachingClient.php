@@ -1,14 +1,14 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2022 Hap http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:23:24
  */
 
 declare(strict_types = 1);
 
-namespace dicr\http;
+namespace hap\http;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -25,12 +25,12 @@ use function preg_quote;
 use function strtoupper;
 
 /**
- * HTTP-клиент с кэшированием ответов.
+ * HTTP client with response caching.
  *
- * Для управлением кэшем используется заголовок Cache-Control со следующими значениями:
- * - no-cache - не кэшировать данный запрос
- * - max-age=seconds - установить время кэширования, секунд
- * При данных значениях заголовок Cache-Control удаляется из запроса.
+ * Cache control uses the Cache-Control header with the following values:
+ * - no-cache - do not cache this request
+ * - max-age=seconds - set caching time, seconds
+ * With these values, the Cache-Control header is removed from the request.
  */
 class CachingClient extends Client
 {
@@ -39,10 +39,10 @@ class CachingClient extends Client
     /** @var string */
     public const CACHE_CONTROL = 'Cache-Control';
 
-    /** @var string не кэшировать запрос */
+    /** @var string don't cache the request */
     public const CACHE_NO_CACHE = 'no-cache';
 
-    /** @var string время кэширования */
+    /** @var string caching time */
     public const CACHE_MAX_AGE = 'max-age';
 
     /** @var int cache time, s */
@@ -54,7 +54,7 @@ class CachingClient extends Client
      */
     public bool $cacheCookies = false;
 
-    /** @var string[] методы запроса для кэширования */
+    /** @var string[] request methods for caching */
     public array $cacheMethods = ['GET'];
 
     /**
@@ -73,7 +73,7 @@ class CachingClient extends Client
 
         $this->cacheMethods = array_map('\strtoupper', $this->cacheMethods);
 
-        // настраиваем дополнительные парсеры
+        // setting up additional parsers
         $this->parsers = array_merge([
             DOMDocumentParser::FORMAT => DOMDocumentParser::class,
             HTMLDocumentParser::FORMAT => HTMLDocumentParser::class
@@ -99,7 +99,7 @@ class CachingClient extends Client
     }
 
     /**
-     * Возвращает время кэширования запроса, заданное в заголовке Cache-Control.
+     * Returns the request caching time specified in the Cache-Control header.
      *
      * @param Request $request
      * @return ?int
@@ -123,7 +123,7 @@ class CachingClient extends Client
             }
         }
 
-        // устанавливаем новые значения
+        // set new values
         if ($modified) {
             $request->headers->remove(self::CACHE_CONTROL);
 
@@ -144,35 +144,35 @@ class CachingClient extends Client
         // время кэширования
         $cacheDuration = self::cacheDuration($request) ?? $this->cacheDuration;
 
-        /** @var ?array $cacheKey ключ кэша если кэширование запроса разрешено */
+        /** @var ?array $cacheKey cache key if request caching is enabled */
         $cacheKey = $cacheDuration !== 0 && in_array(strtoupper($request->method), $this->cacheMethods, true) ?
             $this->cacheKey($request) : null;
 
         /** @var Response|false $response */
         $response = $cacheKey ? $this->cache->get($cacheKey) : false;
 
-        // запрос имеется в кэше
+        // the request is in the cache
         if ($response instanceof Response) {
             Yii::debug('Used cached response for request: ' . $request->fullUrl, __METHOD__);
 
-            // восстанавливаем связь с клиентом
+            // reconnecting with the client
             $response->client = $request->client;
 
             return $response;
         }
 
-        // отправляем запрос на сервер
+        // send a request to the server
         $response = parent::send($request);
 
         // store in cache
         if ($cacheKey && $response->isOk) {
-            // клонируем объект для подготовки к кэшу
+            // clone the object to prepare for the cache
             $cachingResponse = clone $response;
 
             // clean connection to client to not save it in cache
             $cachingResponse->client = null;
 
-            // удаляем куки
+            // delete cookies
             if (! $this->cacheCookies) {
                 $cachingResponse->setCookies([]);
             }

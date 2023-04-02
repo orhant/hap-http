@@ -1,14 +1,14 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2021 Dicr http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license MIT
  * @version 19.04.21 17:02:13
  */
 
 declare(strict_types = 1);
 
-namespace dicr\http;
+namespace hap\http;
 
 use DOMDocument;
 use yii\base\BaseObject;
@@ -24,15 +24,15 @@ use const LIBXML_NOWARNING;
 use const LIBXML_PARSEHUGE;
 
 /**
- * Парсер HTML-текста в \DOMDocument.
+ * HTML-text parser in \DOMDocument.
  */
 class DOMDocumentParser extends BaseObject implements ParserInterface
 {
-    /** @var string формат ответа */
+    /** @var string response format */
     public const FORMAT = 'dom-document';
 
     /**
-     * Парсит контент.
+     * Parset content.
      *
      * @param string $content HTML-контент
      * @param ?string $charset кодировка
@@ -45,17 +45,17 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
             $charset = 'UTF-8';
         }
 
-        // если у документа тег с кодировкой стоит после того как utf-8 символы, то он не учитывается, поэтому добавляем насильно.
+        // if a document has a tag with an encoding after utf-8 characters, then it is not taken into account, so we add it by force.
         // @link https://www.php.net/manual/en/domdocument.loadhtml.php
         $content =
-            // объявление XML-документа. Здесь encoding не влияет на распознавание текста
+            // declaration of an XML document. Here encoding does not affect text recognition
             '<?xml version="1.0" encoding="' . $charset . '" standalone="yes"?>' .
-            // meta старого типа (http-equiv) устанавливает кодировку текста. Она должны быть раньше чем текст в документе.
+            // meta старого типа (http-equiv) sets the text encoding. It must be before the text in the document.
             '<meta http-equiv="Content-Type" content="text/html; charset=' . $charset . '"/>' .
             '<meta charset="' . $charset . '"/>' .
             $content;
 
-        // создаем документ
+        // create a document
         $doc = new DOMDocument('1.0', $charset);
         $doc->resolveExternals = false;
         $doc->recover = true;
@@ -65,7 +65,7 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
         $doc->formatOutput = true;
         $doc->substituteEntities = false;
 
-        // пытаемся загрузить HTML
+        // trying to load HTML
         libxml_clear_errors();
         if (! $doc->loadHTML($content, LIBXML_DTDLOAD | LIBXML_PARSEHUGE | LIBXML_NOWARNING |
             LIBXML_NOERROR | LIBXML_NOCDATA | LIBXML_NONET | LIBXML_NOXMLDECL)) {
@@ -85,7 +85,7 @@ class DOMDocumentParser extends BaseObject implements ParserInterface
      */
     public function parse(Response $response): DOMDocument
     {
-        // получаем кодировку ответа
+        // get response encoding
         $contentType = $response->getHeaders()->get('content-type', '');
         $charset = preg_match('~charset=(.+)~i', $contentType, $matches) ? $matches[1] : 'UTF-8';
 

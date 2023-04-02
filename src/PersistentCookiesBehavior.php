@@ -1,13 +1,13 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2022 Dicr http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:29:15
  */
 
 declare(strict_types = 1);
-namespace dicr\http;
+namespace hap\http;
 
 use Yii;
 use yii\base\Behavior;
@@ -22,14 +22,14 @@ use yii\web\Cookie;
 use yii\web\CookieCollection;
 
 /**
- * Сохранение Cookies в кэше между запросами.
+ * Persistence of Cookies in the cache between requests.
  */
 class PersistentCookiesBehavior extends Behavior
 {
-    /** @var CacheInterface|string кэш куков (ключ привязывается к домену запроса) */
+    /** @var CacheInterface|string cookie cache (the key is bound to the request domain) */
     public string|CacheInterface $store = 'cache';
 
-    /** @var ?int время хранения в кэше */
+    /** @var ?int cache time*/
     public ?int $cacheDuration = null;
 
     /**
@@ -62,7 +62,7 @@ class PersistentCookiesBehavior extends Behavior
     }
 
     /**
-     * Ключ кэширования куков для домена.
+     * Cookie caching key for the domain.
      *
      * @param string $domain
      * @return array
@@ -73,7 +73,7 @@ class PersistentCookiesBehavior extends Behavior
     }
 
     /**
-     * Загружает их кэша куки для домена.
+     * Loads their cookie cache for the domain.
      *
      * @param string $domain
      * @return ?CookieCollection
@@ -86,10 +86,10 @@ class PersistentCookiesBehavior extends Behavior
     }
 
     /**
-     * Сохраняет куки для домена. Если значение пустое, то удаляет.
+     * Stores cookies for the domain. If the value is empty, then deletes.
      *
      * @param string $domain
-     * @param CookieCollection $cookies ассоциативный массив name => Cookie
+     * @param CookieCollection $cookies associative array name => Cookie
      * @return $this
      */
     public function saveCookies(string $domain, CookieCollection $cookies): PersistentCookiesBehavior
@@ -108,7 +108,7 @@ class PersistentCookiesBehavior extends Behavior
     }
 
     /**
-     * Возвращает домен запроса.
+     * Returns the request domain.
      *
      * @param Request $request
      * @return string
@@ -119,31 +119,31 @@ class PersistentCookiesBehavior extends Behavior
     }
 
     /**
-     * Добавляет куки к запросу.
+     * Adds a cookie to the request.
      *
      * @param RequestEvent $event
      * @noinspection PhpMethodNamingConventionInspection
      */
     public function _beforeSend(RequestEvent $event): void
     {
-        // запрос
+        // request
         $request = $event->request;
 
-        // домен
+        // domain
         $domain = static::domain($request);
 
-        // загружаем куки
+        // loading cookies
         $cookies = $this->loadCookies($domain);
 
-        // добавляем к запросу
+        // add to request
         if ($cookies !== null && $cookies->count > 0) {
             $request->addCookies($cookies->toArray());
-            Yii::debug('Добавлено ' . $cookies->count . ' куков', __METHOD__);
+            Yii::debug('Added ' . $cookies->count . ' cookies', __METHOD__);
         }
     }
 
     /**
-     * Забирает куки из ответа.
+     * Takes cookies from the response.
      *
      * @param RequestEvent $event
      * @noinspection PhpMethodNamingConventionInspection
@@ -152,13 +152,13 @@ class PersistentCookiesBehavior extends Behavior
     {
         $response = $event->response;
         if ($response->cookies->count > 0) {
-            // запрос
+            // request
             $request = $event->request;
 
-            // домен
+            // domain
             $domain = static::domain($request);
 
-            // загружаем текущие куки
+            // loading cookies
             $cookies = $this->loadCookies($domain);
 
             if ($cookies === null) {
@@ -171,7 +171,7 @@ class PersistentCookiesBehavior extends Behavior
                 }
             }
 
-            // сохраняем куки в кеше
+            // save cookies in cache
             $this->saveCookies($domain, $cookies);
         }
     }

@@ -1,14 +1,14 @@
-# Утилиты HTTP для Yii2
+# HTTP Utilities for Yii2
 
-Расширяют стандартные возможности пакета `yii2\httpclient`.
+Expand the standard features of the package `yii2\httpclient`.
 
-- `CachingClient` - клиент HTTP с поддержкой кэширования. Наследует `yii2\httpclient`;
-- `PesistentCookieBehavior` - поддержка сохранения куков между запросами;
-- `HttpCompressionBehavior` - поддержка сжатия (gzip, deflate, compress ...);
-- `RequestDelayBehavior` - задержка между запросами;
-- `DOMDocumentParser` - компонент парсера html в `DOMDocument`;
-- `HTMLDocumentParser` - компонент парсера html в `simplehtmldom\HtmlDocument`;
-- `UrlInfo` - модель (парсер/строитель) URL;
-- `UserAgent` - стандартные значения `User-Agent`.
+- `CachingClient` -HTTP client with caching support. inherits `yii2\httpclient`;
+- `PesistentCookieBehavior` - Cupport for saving cookies between requests;
+- `HttpCompressionBehavior` - Compression support (gzip, deflate, compress...);
+- `RequestDelayBehavior` - Delay between requests;
+- `DOMDocumentParser` - Component parser html in `DOMDocument`;
+- `HTMLDocumentParser` - Component parser html in `simplehtmldom\HtmlDocument`;
+- `UrlInfo` - Model(parser/builder) URL;
+- `UserAgent` - Standard values `User-Agent`.
 
 

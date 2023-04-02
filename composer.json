@@ -1,22 +1,22 @@
 {
-    "name": "dicr/yii2-http",
+    "name": "hap/yii2-http",
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
-    "homepage": "https://gitlab.com/dicr/yii2-http",
-    "description": "HTTP-утилиты для Yii2",
-    "keywords": ["dicr", "yii2", "http"],
+    "homepage": "https://gitlab.com/orhant/hap-http.git",
+    "description": "HTTP Utilities for Yii2",
+    "keywords": ["hap", "yii2", "http"],
 
     "authors": [
         {
-            "name": "Igor Tarasov",
-            "email": "develop@dicr.org",
-            "homepage": "https://dicr.org",
+            "name": "Orhan t",
+            "email": "develop@hap.org",
+            "homepage": "https://hap.org",
             "role": "developer"
         }
     ],
 
     "support": {
-        "source": "https://gitlab.com/dicr/yii2-http.git"
+        "source": "https://gitlab.com/orhant/hap-http.git"
     },
 
     "minimum-stability": "RC",
@@ -33,20 +33,20 @@
         "yiisoft/yii2": "~2.0",
         "yiisoft/yii2-httpclient": "~2.0",
 
-        "dicr/yii2-helper": "~6.0",
+        "hap/yii2-helper": "~6.0",
 
         "simplehtmldom/simplehtmldom": "~2.0-RC2"
     },
 
     "autoload": {
         "psr-4": {
-            "dicr\\http\\": "src/"
+            "hap\\http\\": "src/"
         }
     },
 
     "autoload-dev": {
         "psr-4": {
-            "dicr\\tests\\": "tests/"
+            "hap\\tests\\": "tests/"
         }
     },
 
@@ -57,7 +57,7 @@
 
     "repositories": [
         {"type": "composer", "url": "https://asset-packagist.org"},
-        {"type": "gitlab", "url": "https://gitlab.com/dicr/yii2-helper.git"},
+        {"type": "gitlab", "url": "https://gitlab.com/hap/yii2-helper.git"},
         {"type": "github", "url": "https://github.com/simplehtmldom/simplehtmldom.git"}
     ]
 }

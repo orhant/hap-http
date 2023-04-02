@@ -1,13 +1,13 @@
 <?php
 /*
- * @copyright 2019-2021 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2021 Orhant http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 28.05.21 15:03:57
  */
 
 declare(strict_types = 1);
-namespace dicr\http;
+namespace hap\http;
 
 use yii\base\Behavior;
 use yii\httpclient\Client;
@@ -43,7 +43,7 @@ class ResponseCharsetBehavior extends Behavior
         $matches = null;
         $charset = null;
 
-        // определяем кодировку ответа
+        // determine the encoding of the response
         $contentType = $response->headers->get('content-type');
         if (($contentType !== null
                 && preg_match('~text/\w+~ui', $contentType)

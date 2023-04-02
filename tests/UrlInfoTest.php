@@ -1,6 +1,6 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
+ * @copyright 2019-2022 Orhant http://hap.org
  * @author Igor A Tarasov <develop@dicr.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:26:10

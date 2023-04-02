@@ -1,13 +1,13 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2022 Dicr http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:26:10
  */
 
 declare(strict_types = 1);
-namespace dicr\http;
+namespace hap\http;
 
 use Exception;
 use Yii;
@@ -70,7 +70,7 @@ class RequestDelayBehavior extends Behavior
 
         $delay = $min === $max ? $min : random_int($min, $max);
         if ($delay > 0) {
-            Yii::debug(sprintf('Ожидаем паузу: %.1fs', $delay / 1000000), __METHOD__);
+            Yii::debug(sprintf('Waiting for a pause: %.1fs', $delay / 1000000), __METHOD__);
             usleep($delay);
         }
     }

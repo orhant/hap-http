@@ -1,7 +1,7 @@
 <?php
 /*
- * @copyright 2019-2022 Dicr http://dicr.org
- * @author Igor A Tarasov <develop@dicr.org>
+ * @copyright 2019-2022 Orhant http://hap.org
+ * @author Orhan t <develop@hap.org>
  * @license BSD-3-Clause
  * @version 04.01.22 22:26:25
  */
@@ -9,7 +9,7 @@
 /** @noinspection HttpUrlsUsage */
 declare(strict_types = 1);
 
-namespace dicr\http;
+namespace hap\http;
 
 use function array_rand;
 
@@ -109,7 +109,7 @@ class UserAgent
         'Yowser' => 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.136 YaBrowser/20.2.1.248 Yowser/2.5 Safari/537.36',
     ];
 
-    /** @var string[] прочие агенты */
+    /** @var string[] other agents */
     public const OTHERS = [
         '1C' => '1C+Enterprise/8.3',
         '2Gis' => '2GIS/DrugDigger',
@@ -128,9 +128,9 @@ class UserAgent
     ];
 
     /**
-     * Возвращает случайную строку.
+     * Returns a random string.
      *
-     * @param string[] $list список выбора или пустой для выбора всех списков
+     * @param string[] $list select list or empty to select all lists
      * @return string
      */
     public static function random(array $list = []): string
